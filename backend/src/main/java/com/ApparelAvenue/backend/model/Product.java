@@ -1,9 +1,7 @@
 package com.ApparelAvenue.backend.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.ApparelAvenue.backend.constant.Section;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -18,5 +16,6 @@ public class Product {
     private String productQuantity;
     private String productMrp;
     private String productSellingPrice;
-
+    @Enumerated(value = EnumType.STRING)
+    private Section section;
 }
