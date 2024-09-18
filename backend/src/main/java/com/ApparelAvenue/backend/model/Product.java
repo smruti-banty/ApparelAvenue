@@ -13,9 +13,9 @@ public class Product {
     private String productName;
     private String productDescription;
     private String productImage;
-    private String productQuantity;
-    private String productMrp;
-    private String productSellingPrice;
+    private int productQuantity;
+    private Double productMrp;
+    private Double productSellingPrice;
     @Enumerated(value = EnumType.STRING)
     private Section section;
 }
