@@ -6,8 +6,8 @@ public class ProductRequestDto {
     private String productName;
     private String productDescription;
     private String productImage;
-    private String productQuantity;
-    private String productMrp;
-    private String productSellingPrice;
+    private int productQuantity;
+    private double productMrp;
+    private double productSellingPrice;
     private Section section;
 }
