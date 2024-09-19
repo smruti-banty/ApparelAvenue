@@ -12,10 +12,6 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository repository;
 
-    public List<Product> getAllProducts() {
-        return repository.findAll();
-    }
-
     @Override
     public Product createProduct() {
         return null;
@@ -55,7 +51,6 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getProducts() {
         return List.of();
     }
-
 
     @Override
     public Product getProductById(String id) {
