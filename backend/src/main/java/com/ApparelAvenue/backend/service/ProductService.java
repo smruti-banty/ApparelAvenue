@@ -3,8 +3,15 @@ package com.ApparelAvenue.backend.service;
 import java.util.List;
 
 import com.ApparelAvenue.backend.model.Product;
+import com.ApparelAvenue.backend.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
 
 public interface ProductService {
+
+
     Product createProduct();
 
     Product updateProduct(String id, Product newProduct);
