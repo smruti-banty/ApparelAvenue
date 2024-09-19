@@ -5,7 +5,7 @@ import java.util.List;
 import com.ApparelAvenue.backend.model.Product;
 
 public interface ProductService {
-    Product createProduct();
+    Product createProduct(Product product);
 
     Product updateProduct(String id, Product newProduct);
 
