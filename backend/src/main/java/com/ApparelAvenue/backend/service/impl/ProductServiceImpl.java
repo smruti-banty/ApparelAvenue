@@ -24,6 +24,7 @@ public class ProductServiceImpl implements ProductService {
 
         if (optionalProduct.isPresent()){
             newProduct.setProductId(id);
+            newProduct.setProductImage(optionalProduct.get().getProductImage());
             return productRepository.save(newProduct);
         }else {
             throw new RuntimeException("Product not found");
