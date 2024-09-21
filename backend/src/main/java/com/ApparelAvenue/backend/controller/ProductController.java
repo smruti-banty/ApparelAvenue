@@ -9,11 +9,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.http.HttpStatus;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+
+    @PostMapping
+    public ResponseEntity<Product> save(@RequestBody ProductRequestDto dto) {
+        Product product = ProductMapper.convertToProduct(dto);
+        Product savedProduct = productService.createProduct(product);
+
+        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+    }
 
     @PutMapping("/{productId}")
     public ResponseEntity<Product> updateProduct(@PathVariable String productId, @RequestBody ProductUpdateRequestDto dto){

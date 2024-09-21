@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 public class ProductUpdateRequestDto {
-
         private String productName;
         private String productDescription;
         private int productQuantity;
