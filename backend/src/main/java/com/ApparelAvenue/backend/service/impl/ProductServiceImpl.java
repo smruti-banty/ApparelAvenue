@@ -1,6 +1,7 @@
 package com.ApparelAvenue.backend.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(String id, Product newProduct) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateProduct'");
+        Optional<Product> optionalProduct = productRepository.findById(id);
+
+        if (optionalProduct.isPresent()){
+            newProduct.setProductId(id);
+            newProduct.setProductImage(optionalProduct.get().getProductImage());
+            return productRepository.save(newProduct);
+        }else {
+            throw new RuntimeException("Product not found");
+        }
     }
 
     @Override
