@@ -25,30 +25,27 @@ public class ProductServiceImpl implements ProductService {
     public Product updateProduct(String id, Product newProduct) {
         Optional<Product> optionalProduct = productRepository.findById(id);
 
-        if (optionalProduct.isPresent()){
+        if (optionalProduct.isPresent()) {
             newProduct.setProductId(id);
             newProduct.setProductImage(optionalProduct.get().getProductImage());
             return productRepository.save(newProduct);
-        }else {
+        } else {
             throw new RuntimeException("Product not found");
         }
     }
 
     @Override
     public void deleteAllProduct() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteAllProduct'");
     }
 
     @Override
     public Product deleteProductById(String id) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteProductById'");
     }
 
     @Override
     public Product increaseProductQuantity(String id, int quantity) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'increaseProductQuantity'");
     }
 
@@ -70,19 +67,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProductPrice(String id, double price) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'updateProductPrice'");
     }
 
     @Override
     public List<Product> getProducts() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getProducts'");
     }
 
     @Override
     public Product getProductById(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getProductById'");
+        return productRepository.findById(id).orElseThrow();
     }
 }
