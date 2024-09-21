@@ -16,9 +16,8 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository repository;
 
     @Override
-    public Product createProduct() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createProduct'");
+    public Product createProduct(Product product) {
+        return repository.save(product);
     }
 
     @Override
@@ -72,5 +71,4 @@ public class ProductServiceImpl implements ProductService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getProductById'");
     }
-
 }
