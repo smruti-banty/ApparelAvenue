@@ -1,6 +1,7 @@
 package com.ApparelAvenue.backend.service.impl;
 
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.ApparelAvenue.backend.model.Product;
@@ -12,32 +13,35 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-    private final ProductRepository repository;
     private final ProductRepository productRepository;
 
     @Override
-    public Product createProduct() {
-        return null;
+    public Product createProduct(Product product) {
+        return productRepository.save(product);
     }
 
     @Override
     public Product updateProduct(String id, Product newProduct) {
-        return null;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateProduct'");
     }
 
     @Override
     public void deleteAllProduct() {
-
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteAllProduct'");
     }
 
     @Override
     public Product deleteProductById(String id) {
-        return null;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteProductById'");
     }
 
     @Override
     public Product increaseProductQuantity(String id, int quantity) {
-        return null;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'increaseProductQuantity'");
     }
 
     @Override
@@ -56,19 +60,21 @@ public class ProductServiceImpl implements ProductService {
         return product;
     }
 
-
     @Override
     public Product updateProductPrice(String id, double price) {
-        return null;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateProductPrice'");
     }
 
     @Override
     public List<Product> getProducts() {
-        return List.of();
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getProducts'");
     }
 
     @Override
     public Product getProductById(String id) {
-        return null;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getProductById'");
     }
 }
