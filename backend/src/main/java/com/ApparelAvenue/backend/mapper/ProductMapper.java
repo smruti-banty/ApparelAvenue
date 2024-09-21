@@ -14,6 +14,7 @@ public final class ProductMapper {
         BeanUtils.copyProperties(dto, product);
         return product;
     }
+
     public static Product convertProductUpdateRequestDtoToProduct(ProductUpdateRequestDto dto) {
         Product product = new Product();
         BeanUtils.copyProperties(dto, product);
