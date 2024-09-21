@@ -36,37 +36,31 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteAllProduct() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteAllProduct'");
     }
 
     @Override
     public Product deleteProductById(String id) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteProductById'");
     }
 
     @Override
     public Product increaseProductQuantity(String id, int quantity) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'increaseProductQuantity'");
     }
 
     @Override
     public Product decreaseProductQuantity(String id, int quantity) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'decreaseProductQuantity'");
     }
 
     @Override
     public Product updateProductPrice(String id, double price) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'updateProductPrice'");
     }
 
     @Override
     public List<Product> getProducts() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getProducts'");
     }
 
