@@ -54,8 +54,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product decreaseProductQuantity(String id, int quantity) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'decreaseProductQuantity'");
+        if (!productRepository.existsById(id)) {
+            throw new IllegalArgumentException("Product ID: " + id + " does not exist.");
+        }
+        Product product = productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Product not found"));
+        if (product.getProductQuantity() == 0) {
+            throw new IllegalArgumentException("Product quantity is already 0. Cannot decrease further.");
+        } else if (product.getProductQuantity() < quantity) {
+            throw new IllegalArgumentException("Cannot decrease by " + quantity + ". Available quantity is " + product.getProductQuantity() + ".");
+        }
+        product.setProductQuantity(product.getProductQuantity() - quantity);
+        productRepository.save(product);
+        return product;
     }
 
     @Override
