@@ -1,7 +1,15 @@
 package com.ApparelAvenue.backend.repository;
 
 import com.ApparelAvenue.backend.model.Product;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface ProductRepository extends JpaRepository<Product, String> {
+        @Query("UPDATE Product product SET product.productQuantity = product.productQuantity - :quantity WHERE product.productId = :id")
+        @Modifying
+        @Transactional
+        void decrementByQuantity(@Param("id") String id, @Param("quantity") int quantity);
 }
