@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 
 public interface ProductService {
-
-
-    Product createProduct();
+    Product createProduct(Product product);
 
     Product updateProduct(String id, Product newProduct);
 

@@ -5,7 +5,9 @@ import com.ApparelAvenue.backend.constant.Section;
 import lombok.Data;
 
 @Data
-public class ProductRequestDto {
+public class ProductResponseDto {
+
+    private int productId;
     private String productName;
     private String productDescription;
     private String productImage;

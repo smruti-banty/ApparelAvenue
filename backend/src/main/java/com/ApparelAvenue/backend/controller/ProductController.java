@@ -7,10 +7,17 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
+
+import com.ApparelAvenue.backend.dto.ProductRequestDto;
+import com.ApparelAvenue.backend.mapper.ProductMapper;
+import com.ApparelAvenue.backend.model.Product;
+import com.ApparelAvenue.backend.service.ProductService;
+
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -32,6 +39,15 @@ public class ProductController {
         }
     }
 
+    @PostMapping
+    public ResponseEntity<Product> save(@RequestBody ProductRequestDto dto) {
+        Product product = ProductMapper.convertToProduct(dto);
+        Product savedProduct = service.createProduct(product);
+
+        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+    }
 }
+
+
 
 
