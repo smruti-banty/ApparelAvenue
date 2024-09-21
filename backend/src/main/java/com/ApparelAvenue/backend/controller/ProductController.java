@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ApparelAvenue.backend.dto.Price;
 import com.ApparelAvenue.backend.dto.ProductRequestDto;
 import com.ApparelAvenue.backend.dto.ProductUpdateRequestDto;
 import com.ApparelAvenue.backend.mapper.ProductMapper;
@@ -45,8 +45,8 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}/updatePrice")
-    public ResponseEntity<Void> updateProductPrice(@PathVariable String id, @RequestParam double price) {
-        productService.updateProductPrice(id, price);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Product> updateProductPrice(@PathVariable String id, @RequestBody Price price) {
+        Product updateProduct = productService.updateProductPrice(id, price.price());
+        return new ResponseEntity<>(updateProduct, HttpStatus.OK);
     }
 }
