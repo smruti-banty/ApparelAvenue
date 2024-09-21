@@ -1,6 +1,7 @@
 package com.ApparelAvenue.backend.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -13,17 +14,24 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-    private final ProductRepository repository;
+    private final ProductRepository productRepository;
 
     @Override
     public Product createProduct(Product product) {
-        return repository.save(product);
+        return productRepository.save(product);
     }
 
     @Override
     public Product updateProduct(String id, Product newProduct) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateProduct'");
+        Optional<Product> optionalProduct = productRepository.findById(id);
+
+        if (optionalProduct.isPresent()){
+            newProduct.setProductId(id);
+            newProduct.setProductImage(optionalProduct.get().getProductImage());
+            return productRepository.save(newProduct);
+        }else {
+            throw new RuntimeException("Product not found");
+        }
     }
 
     @Override
@@ -58,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getProducts() {
-        return repository.findAll();
+        return productRepository.findAll();
     }
 
     @Override
