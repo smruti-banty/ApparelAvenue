@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ApparelAvenue.backend.dto.Price;
 import com.ApparelAvenue.backend.dto.ProductRequestDto;
 import com.ApparelAvenue.backend.dto.ProductUpdateRequestDto;
 import com.ApparelAvenue.backend.mapper.ProductMapper;
@@ -44,9 +43,24 @@ public class ProductController {
         }
     }
 
-    @PatchMapping("/{id}/updatePrice")
-    public ResponseEntity<Product> updateProductPrice(@PathVariable String id, @RequestBody Price price) {
-        Product updateProduct = productService.updateProductPrice(id, price.price());
-        return new ResponseEntity<>(updateProduct, HttpStatus.OK);
+    @PatchMapping("/{id}/updatePrice/{price}")
+    public ResponseEntity<?> updateProductPrice(@PathVariable String id, @PathVariable double price) {
+        try {
+            Product updateProduct = productService.updateProductPrice(id, price);
+            return new ResponseEntity<Product>(updateProduct, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("Invalid input: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+      
+    }
+
+    @PatchMapping("/{id}/decrement/{quantity}")
+    public ResponseEntity<?> getDecResponseEntity(@PathVariable String id, @PathVariable int quantity) {
+        try {
+            Product product = productService.decreaseProductQuantity(id, quantity);
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }
