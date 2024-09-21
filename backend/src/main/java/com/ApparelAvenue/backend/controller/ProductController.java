@@ -38,4 +38,14 @@ public class ProductController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @PatchMapping("/{id}/decrement/{quantity}")
+    public ResponseEntity<?> getDecResponseEntity(@PathVariable String id, @PathVariable int quantity) {
+        try {
+            Product product = productService.decreaseProductQuantity(id, quantity);
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }
