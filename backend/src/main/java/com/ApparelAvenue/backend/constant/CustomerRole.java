@@ -1,6 +1,6 @@
 package com.ApparelAvenue.backend.constant;
 
-public enum UserRole {
+public enum CustomerRole {
     ADMIN,
     CUSTOMER
 }
