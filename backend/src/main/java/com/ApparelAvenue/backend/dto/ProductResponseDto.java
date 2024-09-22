@@ -7,7 +7,7 @@ import lombok.Data;
 public class ProductResponseDto {
     private int productId;
     private String productName;
-    private String productDescription;
+    private String productDescription; 
     private String productImage;
     private int productQuantity; 
     private double productMrp;
