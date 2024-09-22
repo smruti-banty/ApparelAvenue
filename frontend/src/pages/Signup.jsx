@@ -1,4 +1,8 @@
 function Signup() {
-  <h1>This is the Sign up Page .</h1>;
+  return (
+    <>
+      <h1>This is the Sign up Page .</h1>;
+    </>
+  );
 }
 export default Signup;
