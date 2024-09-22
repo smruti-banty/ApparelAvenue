@@ -66,6 +66,11 @@ public class ProductController {
         }
     }
 
+    @DeleteMapping("/all")
+    public void deleteAllProduct() {
+        productService.deleteAllProduct();
+    }
+
     @PatchMapping("/{id}/decrement/{quantity}")
     public ResponseEntity<?> getDecResponseEntity(@PathVariable String id, @PathVariable int quantity) {
         try {

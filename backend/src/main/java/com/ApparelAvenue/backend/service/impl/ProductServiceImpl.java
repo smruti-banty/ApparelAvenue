@@ -36,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteAllProduct() {
-        throw new UnsupportedOperationException("Unimplemented method 'deleteAllProduct'");
+        productRepository.deleteAll();
     }
 
     @Override
