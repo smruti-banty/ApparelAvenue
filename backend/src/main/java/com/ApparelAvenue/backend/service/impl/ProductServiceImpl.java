@@ -87,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getProducts() {
-        throw new UnsupportedOperationException("Unimplemented method 'getProducts'");
+        return productRepository.findAll();
     }
 
     @Override
