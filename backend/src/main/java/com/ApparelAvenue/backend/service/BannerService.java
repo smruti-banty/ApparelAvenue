@@ -10,13 +10,11 @@ import com.ApparelAvenue.backend.model.Banner;
 public interface BannerService {
     Banner creatBanner(Banner banner);
 
-    Banner updateBannerImage(String id, Banner newImage);
-
-    Banner updateBannerTitle(String id, Banner newTitle);
+    Banner updateBanner(String id, Banner newBanner);
 
     List<Banner> getAllBanners();
 
     Banner getBannerById(String id);
 
-    void deleteBanner(String id);
+    Banner deleteBannerById(String id);
 }

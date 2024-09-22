@@ -1,6 +1,7 @@
 package com.ApparelAvenue.backend.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -21,14 +22,6 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
-    public Banner updateBannerImage(String id, Banner newImage) {
-        Banner existingBanner = bannerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Banner not found"));
-        existingBanner.setBannerImage(newImage.getBannerImage());
-        return bannerRepository.save(existingBanner);
-    }
-
-    @Override
     public List<Banner> getAllBanners() {
         return bannerRepository.findAll();
     }
@@ -40,15 +33,30 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
-    public void deleteBanner(String id) {
-        bannerRepository.deleteById(id);
+    public Banner updateBanner(String id, Banner newBanner) {
+        Optional<Banner> optionalBanner = bannerRepository.findById(id);
+
+        return optionalBanner.map(existingBanner -> {
+            if (newBanner.getBannerTitle() != null) {
+                existingBanner.setBannerTitle(newBanner.getBannerTitle());
+            }
+            if (newBanner.getBannerImage() != null) {
+                existingBanner.setBannerImage(newBanner.getBannerImage());
+            }
+            if (newBanner.getSection() != null) {
+                existingBanner.setSection(newBanner.getSection());
+            }
+            return bannerRepository.save(existingBanner);
+        }).orElseThrow(() -> new RuntimeException("Banner not found with id: " + id));
     }
 
     @Override
-    public Banner updateBannerTitle(String id, Banner newTitle) {
-        Banner existingBanner = bannerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Banner not found"));
-        existingBanner.setBannerTitle(newTitle.getBannerTitle());
-        return bannerRepository.save(existingBanner);
+    public Banner deleteBannerById(String id) {
+       if (!bannerRepository.existsById(id)) {
+        throw new IllegalArgumentException(id + "does not exist");
+       }
+       Banner banner = bannerRepository.findById(id).get();
+       bannerRepository.delete(banner);
+       return banner;
     }
 }
