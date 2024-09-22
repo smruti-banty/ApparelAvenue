@@ -50,8 +50,7 @@ public class ProductController {
             return new ResponseEntity<Product>(updateProduct, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("Invalid input: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-      
+        } 
     }
 
     @PatchMapping("/{id}/decrement/{quantity}")
