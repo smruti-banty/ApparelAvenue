@@ -24,7 +24,7 @@ public class BannerServiceImpl implements BannerService {
     public Banner updateBannerImage(String id, Banner newImage) {
         Banner existingBanner = bannerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Banner not found"));
-        existingBanner.setBannerImage(newImage.getBannerImage()); 
+        existingBanner.setBannerImage(newImage.getBannerImage());
         return bannerRepository.save(existingBanner);
     }
 
@@ -42,5 +42,13 @@ public class BannerServiceImpl implements BannerService {
     @Override
     public void deleteBanner(String id) {
         bannerRepository.deleteById(id);
+    }
+
+    @Override
+    public Banner updateBannerTitle(String id, Banner newTitle) {
+        Banner existingBanner = bannerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Banner not found"));
+        existingBanner.setBannerTitle(newTitle.getBannerTitle());
+        return bannerRepository.save(existingBanner);
     }
 }

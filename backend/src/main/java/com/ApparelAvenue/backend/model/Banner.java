@@ -14,8 +14,9 @@ import lombok.Data;
 @Data
 public class Banner {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String bannerId;
+    private String bannerTitle;
     private String bannerImage;
     @Enumerated(value = EnumType.STRING)
     private Section section;

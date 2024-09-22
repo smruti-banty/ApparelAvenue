@@ -12,6 +12,8 @@ public interface BannerService {
 
     Banner updateBannerImage(String id, Banner newImage);
 
+    Banner updateBannerTitle(String id, Banner newTitle);
+
     List<Banner> getAllBanners();
 
     Banner getBannerById(String id);

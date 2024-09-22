@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class BannerResponseDto {
     private String bannerId;
+    private String bannerTitle;
     private String bannerImage;
     private Section section; 
 }

@@ -3,6 +3,7 @@ package com.ApparelAvenue.backend.mapper;
 import org.springframework.beans.BeanUtils;
 
 import com.ApparelAvenue.backend.dto.BannerRequestDto;
+import com.ApparelAvenue.backend.dto.BannerUpdateRequestDto;
 import com.ApparelAvenue.backend.model.Banner;
 
 public final class BannerMapper {
@@ -13,5 +14,11 @@ public final class BannerMapper {
         Banner banner = new Banner();
         BeanUtils.copyProperties(dto, banner);
         return banner;
-    }    
+    }
+
+    public static Banner convertBannerUpdateRequestDtoToBanner(BannerUpdateRequestDto dto) {
+        Banner banner = new Banner();
+        BeanUtils.copyProperties(dto, banner);
+        return banner;
+    }
 }
