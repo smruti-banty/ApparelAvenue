@@ -74,7 +74,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProductPrice(String id, double price) {
-        throw new UnsupportedOperationException("Unimplemented method 'updateProductPrice'");
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Product with ID: " + id + " does not exist"));
+        if (price <= 0) {
+            throw new IllegalArgumentException("Price must be greater than zero.");
+        } else if (price > product.getProductMrp()) {
+            throw new IllegalArgumentException("Selling price cannot be lower than the actual price.");
+        }
+        productRepository.updateProductPrice(id, price);
+        return product;
     }
 
     @Override
