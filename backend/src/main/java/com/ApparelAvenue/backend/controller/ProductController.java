@@ -76,7 +76,7 @@ public class ProductController {
             return new ResponseEntity<Product>(updateProduct, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("Invalid input: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        } 
+        }
     }
 
     @DeleteMapping("/all")
@@ -92,5 +92,11 @@ public class ProductController {
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PatchMapping("/{id}/increase-quantity/{quantity}")
+    public ResponseEntity<Product> increaseProductQuantity(@PathVariable String id, @PathVariable int quantity) {
+        Product product = productService.increaseProductQuantity(id, quantity);
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 }

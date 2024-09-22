@@ -51,7 +51,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product increaseProductQuantity(String id, int quantity) {
-        throw new UnsupportedOperationException("Unimplemented method 'increaseProductQuantity'");
+        if (!productRepository.existsById(id)) {
+            throw new IllegalArgumentException("product Id" + id + "doesnot Exists");
+        }
+
+        Product product = productRepository.findById(id).get();
+        product.setProductQuantity(product.getProductQuantity() + quantity);
+        productRepository.save(product);
+        return product;
     }
 
     @Override
