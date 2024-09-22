@@ -3,7 +3,6 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:1200/api/v1/products"; // Base URL for product-related API
 
-// Fetch a product by ID
 export const getProductById = async (productId) => {
   try {
     const response = await axios.get(`${BASE_URL}/${productId}`);
@@ -17,7 +16,6 @@ export const getProductById = async (productId) => {
   }
 };
 
-// Delete a product by ID
 export const deleteProductById = async (id) => {
   try {
     const response = await axios.delete(`${BASE_URL}/delete/${id}`);
@@ -31,7 +29,6 @@ export const deleteProductById = async (id) => {
   }
 };
 
-// Create a new product
 export const createProduct = async (productRequestDto) => {
   try {
     const response = await axios.post(BASE_URL, productRequestDto);
@@ -45,7 +42,6 @@ export const createProduct = async (productRequestDto) => {
   }
 };
 
-// Update a product by ID
 export const updateProduct = async (productId, productUpdateRequestDto) => {
   try {
     const response = await axios.put(
@@ -62,7 +58,6 @@ export const updateProduct = async (productId, productUpdateRequestDto) => {
   }
 };
 
-// Update product price by ID
 export const updateProductPrice = async (id, price) => {
   try {
     const response = await axios.patch(
@@ -78,7 +73,6 @@ export const updateProductPrice = async (id, price) => {
   }
 };
 
-// Delete all products
 export const deleteAllProducts = async () => {
   try {
     const response = await axios.delete(`${BASE_URL}/all`);
@@ -92,7 +86,6 @@ export const deleteAllProducts = async () => {
   }
 };
 
-// Decrease product quantity by ID
 export const decreaseProductQuantity = async (id, quantity) => {
   try {
     const response = await axios.patch(
