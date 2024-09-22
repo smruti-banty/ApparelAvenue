@@ -41,7 +41,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product deleteProductById(String id) {
-        throw new UnsupportedOperationException("Unimplemented method 'deleteProductById'");
+        if (!productRepository.existsById(id)) {
+            throw new IllegalArgumentException(id + "does not exist.");
+        }
+        var product = productRepository.findById(id).get();
+        productRepository.delete(product);
+        return product;
     }
 
     @Override
@@ -54,11 +59,13 @@ public class ProductServiceImpl implements ProductService {
         if (!productRepository.existsById(id)) {
             throw new IllegalArgumentException("Product ID: " + id + " does not exist.");
         }
-        Product product = productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Product not found"));
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
         if (product.getProductQuantity() == 0) {
             throw new IllegalArgumentException("Product quantity is already 0. Cannot decrease further.");
         } else if (product.getProductQuantity() < quantity) {
-            throw new IllegalArgumentException("Cannot decrease by " + quantity + ". Available quantity is " + product.getProductQuantity() + ".");
+            throw new IllegalArgumentException(
+                    "Cannot decrease by " + quantity + ". Available quantity is " + product.getProductQuantity() + ".");
         }
         product.setProductQuantity(product.getProductQuantity() - quantity);
         productRepository.save(product);
