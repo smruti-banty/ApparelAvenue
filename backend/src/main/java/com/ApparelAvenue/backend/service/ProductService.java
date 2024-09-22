@@ -3,9 +3,11 @@ package com.ApparelAvenue.backend.service;
 import java.util.List;
 
 import com.ApparelAvenue.backend.model.Product;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface ProductService {
-    Product createProduct();
+    Product createProduct(Product product);
 
     Product updateProduct(String id, Product newProduct);
 
