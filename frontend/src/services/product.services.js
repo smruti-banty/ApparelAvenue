@@ -1,4 +1,3 @@
-// product.services.js
 import axios from "axios";
 
 const BASE_URL = "http://localhost:1200/api/v1/products"; // Base URL for product-related API
