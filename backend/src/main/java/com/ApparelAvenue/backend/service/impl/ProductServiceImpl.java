@@ -36,12 +36,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteAllProduct() {
-        throw new UnsupportedOperationException("Unimplemented method 'deleteAllProduct'");
+        productRepository.deleteAll();
     }
 
     @Override
     public Product deleteProductById(String id) {
-        throw new UnsupportedOperationException("Unimplemented method 'deleteProductById'");
+        if (!productRepository.existsById(id)) {
+            throw new IllegalArgumentException(id + "does not exist.");
+        }
+        var product = productRepository.findById(id).get();
+        productRepository.delete(product);
+        return product;
     }
 
     @Override
