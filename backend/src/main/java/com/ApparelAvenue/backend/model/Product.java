@@ -1,5 +1,6 @@
 package com.ApparelAvenue.backend.model;
 
+import com.ApparelAvenue.backend.constant.ProductStatus;
 import com.ApparelAvenue.backend.constant.Section;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -18,4 +19,6 @@ public class Product {
     private double productSellingPrice;
     @Enumerated(value = EnumType.STRING)
     private Section section;
+    @Enumerated(value = EnumType.STRING)
+    private ProductStatus productStatus;
 }
