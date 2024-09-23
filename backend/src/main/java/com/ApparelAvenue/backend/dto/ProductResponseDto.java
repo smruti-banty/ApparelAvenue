@@ -15,5 +15,4 @@ public class ProductResponseDto {
     private double productSellingPrice;
     private Section section;
     private ProductStatus productStatus;
-
 }
