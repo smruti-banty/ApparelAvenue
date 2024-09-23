@@ -1,6 +1,8 @@
 
 package com.ApparelAvenue.backend.controller;
 
+import java.util.List;
+
 import com.ApparelAvenue.backend.dto.ProductResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -100,5 +102,14 @@ public class ProductController {
     public ResponseEntity<Product> increaseProductQuantity(@PathVariable String id, @PathVariable int quantity) {
         Product product = productService.increaseProductQuantity(id, quantity);
         return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<Product>> getActiveAndInactiveProducts() {
+        return ResponseEntity.ok(productService.getProducts());
+    }
+
+    @GetMapping("/all")
+    public List<Product> getProducts() {
+        return productService.getProducts();
     }
 }
