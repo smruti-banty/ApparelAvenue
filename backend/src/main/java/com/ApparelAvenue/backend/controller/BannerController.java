@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ApparelAvenue.backend.constant.Section;
 import com.ApparelAvenue.backend.dto.BannerRequestDto;
 import com.ApparelAvenue.backend.dto.BannerUpdateRequestDto;
 import com.ApparelAvenue.backend.mapper.BannerMapper;
@@ -28,9 +30,16 @@ public class BannerController {
     private final BannerService bannerService;
 
     @PostMapping
-    public ResponseEntity<Banner> createBanner(@RequestBody BannerRequestDto dto) {
+    public ResponseEntity<Banner> createBanner(
+            @RequestParam("bannerTitle") String bannerTitle,
+            @RequestParam("bannerImage") MultipartFile bannerImage,
+            @RequestParam("section") String section) {
+        BannerRequestDto dto = new BannerRequestDto();
+        dto.setBannerTitle(bannerTitle);
+        dto.setSection(Section.valueOf(section.toUpperCase()));
+        dto.setBannerImage(bannerImage);
         Banner banner = BannerMapper.convertToBanner(dto);
-        Banner createdBanner = bannerService.creatBanner(banner);
+        Banner createdBanner = bannerService.creatBanner(banner, dto.getBannerImage());
         return new ResponseEntity<>(createdBanner, HttpStatus.CREATED);
     }
 
@@ -52,14 +61,21 @@ public class BannerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Banner> updateBanner(@PathVariable String id,
-            @RequestBody BannerUpdateRequestDto dto) {
+    public ResponseEntity<?> updateBanner(
+            @PathVariable String id,
+            @RequestParam("bannerTitle") String bannerTitle,
+            @RequestParam("section") String section,
+            @RequestParam(value = "bannerImage", required = false) MultipartFile bannerImage) {
+        BannerUpdateRequestDto dto = new BannerUpdateRequestDto();
+        dto.setBannerTitle(bannerTitle);
+        dto.setSection(Section.valueOf(section.toUpperCase()));
+        Banner newBanner = BannerMapper.convertBannerUpdateRequestDtoToBanner(dto);
         try {
-            Banner newBanner = BannerMapper.convertBannerUpdateRequestDtoToBanner(dto);
-            Banner updateBanner = bannerService.updateBanner(id, newBanner);
-            return ResponseEntity.ok(updateBanner);
+            Banner updatedBanner = bannerService.updateBanner(id, newBanner, bannerImage);
+            return ResponseEntity.ok(updatedBanner);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
         }
     }
 

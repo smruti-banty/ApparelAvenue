@@ -13,3 +13,7 @@ spring:
 
 server:
   port: 1200
+
+upload:
+  file:
+    banner: "banner-image"
