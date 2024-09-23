@@ -102,14 +102,4 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findById(id).orElseThrow();
     }
 
-    @Override
-    public List<Product> getActiveProduct() {
-        return productRepository.findByActive(true);
-    }
-
-    @Override
-    public List<Product> getInactiveProduct() {
-        return productRepository.findByActive(false);
-    }
-
 }
