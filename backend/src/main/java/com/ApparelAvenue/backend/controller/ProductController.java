@@ -89,7 +89,7 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}/decrement/{quantity}")
-    public ResponseEntity<?> getDecResponseEntity(@PathVariable String id, @PathVariable int quantity) {
+    public ResponseEntity<?> decreaseProductQuantity(@PathVariable String id, @PathVariable int quantity) {
         try {
             Product product = productService.decreaseProductQuantity(id, quantity);
             return new ResponseEntity<>(product, HttpStatus.OK);
