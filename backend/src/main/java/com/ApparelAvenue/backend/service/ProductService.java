@@ -24,4 +24,9 @@ public interface ProductService {
     List<Product> getProducts();
 
     Product getProductById(String id);
+
+    List<Product> getActiveProduct();
+
+    List<Product> getInactiveProduct();
+
 }

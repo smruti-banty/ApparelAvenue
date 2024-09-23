@@ -101,4 +101,15 @@ public class ProductServiceImpl implements ProductService {
     public Product getProductById(String id) {
         return productRepository.findById(id).orElseThrow();
     }
+
+    @Override
+    public List<Product> getActiveProduct() {
+        return productRepository.findByActive(true);
+    }
+
+    @Override
+    public List<Product> getInactiveProduct() {
+        return productRepository.findByActive(false);
+    }
+
 }

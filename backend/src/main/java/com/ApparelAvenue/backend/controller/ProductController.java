@@ -1,6 +1,8 @@
 
 package com.ApparelAvenue.backend.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -98,5 +100,23 @@ public class ProductController {
     public ResponseEntity<Product> increaseProductQuantity(@PathVariable String id, @PathVariable int quantity) {
         Product product = productService.increaseProductQuantity(id, quantity);
         return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<Product>> getActiveAndInactiveProducts() {
+        try {
+            List<Product> activeProducts = productService.getActiveProduct();
+            List<Product> inactiveProducts = productService.getInactiveProduct();
+            activeProducts.addAll(inactiveProducts);
+
+            return ResponseEntity.ok(activeProducts);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
+    }
+
+    @GetMapping("/all")
+    public List<Product> getProducts() {
+        return productService.getProducts();
     }
 }
