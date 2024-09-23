@@ -1,6 +1,12 @@
 
 package com.ApparelAvenue.backend.controller;
 
+import com.ApparelAvenue.backend.constant.OrderAndCartStatus;
+import com.ApparelAvenue.backend.constant.ProductStatus;
+import com.ApparelAvenue.backend.constant.Section;
+import com.ApparelAvenue.backend.model.OrderAndCart;
+import com.ApparelAvenue.backend.repository.CustomerRepository;
+import com.ApparelAvenue.backend.repository.OrderAndCartRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,11 +27,16 @@ import com.ApparelAvenue.backend.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+    private final OrderAndCartRepository orderAndCartRepository;
+    private final CustomerRepository customerRepository;
 
     @GetMapping("/{productId}")
     public ResponseEntity<?> getProductById(@PathVariable String productId) {
@@ -98,5 +109,18 @@ public class ProductController {
     public ResponseEntity<Product> increaseProductQuantity(@PathVariable String id, @PathVariable int quantity) {
         Product product = productService.increaseProductQuantity(id, quantity);
         return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    @PostMapping("/cart")
+    public void saveCart(){
+        OrderAndCart orderAndCart = new OrderAndCart();
+        orderAndCart.setCustomer(customerRepository.getById("uuid-cust-002"));
+        List<Product> products = new ArrayList<>();
+        products.add(productService.getProductById("3c4d5e6f-uuid-9101"));
+        products.add(productService.getProductById("3c4d5e6f-uuid-9101"));
+        products.add(productService.getProductById("3c4d5e6f-uuid-9101"));
+        orderAndCart.setProducts(products);
+        orderAndCart.setOrderAndCartStatus(OrderAndCartStatus.CART);
+        orderAndCartRepository.save(orderAndCart);
     }
 }

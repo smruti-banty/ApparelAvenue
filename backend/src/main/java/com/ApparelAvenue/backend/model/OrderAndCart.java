@@ -15,8 +15,10 @@ import jakarta.persistence.SequenceGenerator;
 import java.util.List;
 
 import com.ApparelAvenue.backend.constant.OrderAndCartStatus;
+import lombok.Data;
 
 @Entity
+@Data
 public class OrderAndCart {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_sequence")
