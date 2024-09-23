@@ -1,0 +1,11 @@
+package com.ApparelAvenue.backend.service;
+
+import com.ApparelAvenue.backend.model.Customer;
+
+public interface CustomerService {
+
+    Customer addCustomer(Customer customer);
+
+    Customer findById(String id);
+
+}
