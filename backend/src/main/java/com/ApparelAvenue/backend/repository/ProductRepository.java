@@ -16,5 +16,4 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 
     @Query("UPDATE Product product SET product.productQuantity = product.productQuantity - :quantity WHERE product.productId = :id")
     void decrementByQuantity(@Param("id") String id, @Param("quantity") int quantity);
-
 }
