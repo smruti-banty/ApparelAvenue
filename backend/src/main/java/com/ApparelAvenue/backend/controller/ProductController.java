@@ -103,16 +103,7 @@ public class ProductController {
     }
 
     public ResponseEntity<List<Product>> getActiveAndInactiveProducts() {
-        try {
-            List<Product> activeProducts = productService.getActiveProduct();
-            List<Product> inactiveProducts = productService.getInactiveProduct();
-            activeProducts.addAll(inactiveProducts);
-
-            return ResponseEntity.ok(activeProducts);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
-        }
+        return ResponseEntity.ok(productService.getProducts());
     }
 
     @GetMapping("/all")
