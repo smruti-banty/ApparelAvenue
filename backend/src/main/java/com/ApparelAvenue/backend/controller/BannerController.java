@@ -52,7 +52,7 @@ public class BannerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Banner> uodateBanner(@PathVariable String id,
+    public ResponseEntity<Banner> updateBanner(@PathVariable String id,
             @RequestBody BannerUpdateRequestDto dto) {
         try {
             Banner newBanner = BannerMapper.convertBannerUpdateRequestDtoToBanner(dto);
