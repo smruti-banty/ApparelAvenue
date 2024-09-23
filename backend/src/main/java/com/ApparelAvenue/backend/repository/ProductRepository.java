@@ -12,7 +12,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     @Transactional
     @Query("UPDATE Product p SET p.productSellingPrice = :price WHERE p.productId = :id")
     void updateProductPrice(@Param("id") String id, @Param("price") double price);
-    
+
     @Query("UPDATE Product product SET product.productQuantity = product.productQuantity - :quantity WHERE product.productId = :id")
     void decrementByQuantity(@Param("id") String id, @Param("quantity") int quantity);
 }

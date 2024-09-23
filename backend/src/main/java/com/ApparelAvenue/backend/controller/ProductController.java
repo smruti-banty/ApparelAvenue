@@ -30,11 +30,11 @@ public class ProductController {
     @GetMapping("/{productId}")
     public ResponseEntity<?> getProductById(@PathVariable String productId) {
         try {
-            Product product = productService.getProductById(productId); // Declare product only once
+            Product product = productService.getProductById(productId);
             return ResponseEntity.ok(product);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Product not found with id: " + productId); // Use productId instead of id
+                    .body("Product not found with id: " + productId);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An error occurred while fetching the product.");
@@ -45,8 +45,7 @@ public class ProductController {
     public ResponseEntity<Product> deleteProductById(@PathVariable String id) {
 
         Product product = productService.deleteProductById(id);
-        return new ResponseEntity<>(product, HttpStatus.NO_CONTENT);
-
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     @PostMapping
@@ -80,8 +79,9 @@ public class ProductController {
     }
 
     @DeleteMapping("/all")
-    public void deleteAllProduct() {
+    public ResponseEntity<Void> deleteAllProduct() {
         productService.deleteAllProduct();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/{id}/decrement/{quantity}")
