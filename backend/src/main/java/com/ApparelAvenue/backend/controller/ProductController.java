@@ -4,6 +4,7 @@ package com.ApparelAvenue.backend.controller;
 import java.util.List;
 
 import com.ApparelAvenue.backend.dto.ProductResponseDto;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -54,7 +55,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> save(@RequestBody ProductRequestDto dto) {
+    public ResponseEntity<Product> save(@Valid @RequestBody ProductRequestDto dto) {
+        System.out.println("Received request: " + dto);
         Product product = ProductMapper.convertToProduct(dto);
         Product savedProduct = productService.createProduct(product);
 
