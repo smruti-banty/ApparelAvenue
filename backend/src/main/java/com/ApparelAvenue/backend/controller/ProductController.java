@@ -46,27 +46,33 @@ public class ProductController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Product> deleteProductById(@PathVariable String id) {
-
-        Product product = productService.deleteProductById(id);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+    public ResponseEntity<?> deleteProductById(@PathVariable String id) {
+        try {
+            Product product = productService.deleteProductById(id);
+            ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(product);
+            return new ResponseEntity<>(responseDto, HttpStatus.NO_CONTENT);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Product not found with id: " + id);
+        }
     }
 
     @PostMapping
-    public ResponseEntity<Product> save(@RequestBody ProductRequestDto dto) {
+    public ResponseEntity<ProductResponseDto> save(@RequestBody ProductRequestDto dto) {
         Product product = ProductMapper.convertToProduct(dto);
         Product savedProduct = productService.createProduct(product);
-
-        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+        ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(savedProduct);
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<Product> updateProduct(@PathVariable String productId,
+    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable String productId,
             @RequestBody ProductUpdateRequestDto dto) {
         try {
-            var newProduct = ProductMapper.convertProductUpdateRequestDtoToProduct(dto);
-            var updateProduct = productService.updateProduct(productId, newProduct);
-            return ResponseEntity.ok(updateProduct);
+            Product newProduct = ProductMapper.convertProductUpdateRequestDtoToProduct(dto);
+            Product updatedProduct = productService.updateProduct(productId, newProduct);
+            ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(updatedProduct);
+            return ResponseEntity.ok(responseDto);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -75,10 +81,12 @@ public class ProductController {
     @PatchMapping("/{id}/updatePrice/{price}")
     public ResponseEntity<?> updateProductPrice(@PathVariable String id, @PathVariable double price) {
         try {
-            Product updateProduct = productService.updateProductPrice(id, price);
-            return new ResponseEntity<Product>(updateProduct, HttpStatus.OK);
+            Product updatedProduct = productService.updateProductPrice(id, price);
+            ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(updatedProduct);
+            return ResponseEntity.ok(responseDto);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>("Invalid input: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Invalid input: " + e.getMessage());
         }
     }
 
@@ -92,16 +100,19 @@ public class ProductController {
     public ResponseEntity<?> decreaseProductQuantity(@PathVariable String id, @PathVariable int quantity) {
         try {
             Product product = productService.decreaseProductQuantity(id, quantity);
-            return new ResponseEntity<>(product, HttpStatus.OK);
+            ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(product);
+            return ResponseEntity.ok(responseDto);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
     @PatchMapping("/{id}/increase-quantity/{quantity}")
-    public ResponseEntity<Product> increaseProductQuantity(@PathVariable String id, @PathVariable int quantity) {
+    public ResponseEntity<ProductResponseDto> increaseProductQuantity(@PathVariable String id,
+            @PathVariable int quantity) {
         Product product = productService.increaseProductQuantity(id, quantity);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(product);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     public ResponseEntity<List<Product>> getActiveAndInactiveProducts() {
