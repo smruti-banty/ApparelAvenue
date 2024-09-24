@@ -19,7 +19,7 @@ public class Customer {
     private String customerName;
     private String customerPassword;
     private String customerEmail;
-    private int customerPhoneNumber;
+    private String customerPhoneNumber;
     private String customerAddress;
     @Enumerated(value = EnumType.STRING)
     private CustomerRole customerRole;
