@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.ApparelAvenue.backend.constant.ProductStatus;
 import com.ApparelAvenue.backend.model.Product;
 import com.ApparelAvenue.backend.repository.ProductRepository;
 import com.ApparelAvenue.backend.service.ProductService;
@@ -36,7 +37,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteAllProduct() {
-        productRepository.deleteAll();
+        List<Product> products = productRepository.findAll();
+
+        for (Product product : products) {
+            product.setProductStatus(ProductStatus.INACTIVE);
+        }
+
+        productRepository.saveAll(products);
     }
 
     @Override
@@ -44,9 +51,10 @@ public class ProductServiceImpl implements ProductService {
         if (!productRepository.existsById(id)) {
             throw new IllegalArgumentException(id + "does not exist.");
         }
-        var product = productRepository.findById(id).get();
-        productRepository.delete(product);
-        return product;
+
+        var product = productRepository.findById(id).orElseThrow();
+        product.setProductStatus(ProductStatus.INACTIVE);
+        return productRepository.save(product);
     }
 
     @Override
