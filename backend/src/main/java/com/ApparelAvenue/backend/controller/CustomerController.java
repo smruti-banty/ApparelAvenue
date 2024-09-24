@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ApparelAvenue.backend.model.Customer;
 import com.ApparelAvenue.backend.service.CustomerService;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -24,8 +23,8 @@ import lombok.RequiredArgsConstructor;
 public class CustomerController {
     private final CustomerService customerService;
 
-    @PostMapping
-    public ResponseEntity<Customer> addCustomer(@Valid @RequestBody Customer customer) {
+    @PostMapping("/addCustomer")
+    public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
         Customer customer1 = customerService.addCustomer(customer);
         return new ResponseEntity<>(customer1, HttpStatus.CREATED);
     }
@@ -36,16 +35,15 @@ public class CustomerController {
         return new ResponseEntity<>(admin, HttpStatus.OK);
     }
 
-    @PostMapping("/admin")
-    public ResponseEntity<Customer> addAdmin(@Valid @RequestBody Customer admin) {
+    @PostMapping("/addAdmin")
+    public ResponseEntity<Customer> addAdmin(@RequestBody Customer admin) {
         Customer adminCreated = customerService.addAdmin(admin);
         return new ResponseEntity<>(adminCreated, HttpStatus.CREATED);
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<Customer> login(@RequestParam String email) {
+    @GetMapping("/getByEmail")
+    public ResponseEntity<Customer> getByEmail(@RequestParam String email) {
         Customer customer = customerService.findByEmail(email);
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
-
 }
