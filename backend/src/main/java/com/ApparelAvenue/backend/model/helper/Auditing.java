@@ -1,4 +1,4 @@
-package com.ApparelAvenue.backend.dto.helper;
+package com.ApparelAvenue.backend.model.helper;
 
 import java.time.LocalDateTime;
 
