@@ -50,7 +50,6 @@ public class BannerServiceImpl implements BannerService {
     public Banner updateBanner(String id, Banner newBanner, MultipartFile bannerImage) {
         Banner existingBanner = bannerRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Banner not found with id: " + id));
-
         if (newBanner.getBannerTitle() != null) {
             existingBanner.setBannerTitle(newBanner.getBannerTitle());
         }
