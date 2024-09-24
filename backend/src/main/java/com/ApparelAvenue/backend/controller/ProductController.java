@@ -1,6 +1,9 @@
 
 package com.ApparelAvenue.backend.controller;
 
+import java.util.List;
+
+import com.ApparelAvenue.backend.dto.ProductResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,8 +33,9 @@ public class ProductController {
     @GetMapping("/{productId}")
     public ResponseEntity<?> getProductById(@PathVariable String productId) {
         try {
-            Product product = productService.getProductById(productId); // Declare product only once
-            return ResponseEntity.ok(product);
+            Product product = productService.getProductById(productId);
+            ProductResponseDto productResponseDto = ProductMapper.convertToProductResponseDto(product);
+            return ResponseEntity.ok(productResponseDto);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Product not found with id: " + productId); // Use productId instead of id
@@ -98,5 +102,14 @@ public class ProductController {
     public ResponseEntity<Product> increaseProductQuantity(@PathVariable String id, @PathVariable int quantity) {
         Product product = productService.increaseProductQuantity(id, quantity);
         return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<Product>> getActiveAndInactiveProducts() {
+        return ResponseEntity.ok(productService.getProducts());
+    }
+
+    @GetMapping("/all")
+    public List<Product> getProducts() {
+        return productService.getProducts();
     }
 }
