@@ -6,15 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.ApparelAvenue.backend.constant.Section;
 import com.ApparelAvenue.backend.dto.BannerRequestDto;
 import com.ApparelAvenue.backend.dto.BannerUpdateRequestDto;
 import com.ApparelAvenue.backend.mapper.BannerMapper;
@@ -30,14 +28,7 @@ public class BannerController {
     private final BannerService bannerService;
 
     @PostMapping
-    public ResponseEntity<Banner> createBanner(
-            @RequestParam("bannerTitle") String bannerTitle,
-            @RequestParam("bannerImage") MultipartFile bannerImage,
-            @RequestParam("section") String section) {
-        BannerRequestDto dto = new BannerRequestDto();
-        dto.setBannerTitle(bannerTitle);
-        dto.setSection(Section.valueOf(section.toUpperCase()));
-        dto.setBannerImage(bannerImage);
+    public ResponseEntity<Banner> createBanner(@ModelAttribute BannerRequestDto dto) {
         Banner banner = BannerMapper.convertToBanner(dto);
         Banner createdBanner = bannerService.creatBanner(banner, dto.getBannerImage());
         return new ResponseEntity<>(createdBanner, HttpStatus.CREATED);
@@ -63,16 +54,14 @@ public class BannerController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateBanner(
             @PathVariable String id,
-            @RequestParam("bannerTitle") String bannerTitle,
-            @RequestParam("section") String section,
-            @RequestParam(value = "bannerImage", required = false) MultipartFile bannerImage) {
-        BannerUpdateRequestDto dto = new BannerUpdateRequestDto();
-        dto.setBannerTitle(bannerTitle);
-        dto.setSection(Section.valueOf(section.toUpperCase()));
-        Banner newBanner = BannerMapper.convertBannerUpdateRequestDtoToBanner(dto);
+            @ModelAttribute BannerUpdateRequestDto dto) {
         try {
-            Banner updatedBanner = bannerService.updateBanner(id, newBanner, bannerImage);
+            Banner newBanner = BannerMapper.convertBannerUpdateRequestDtoToBanner(dto);
+            Banner updatedBanner = bannerService.updateBanner(id, newBanner, dto.getBannerImage());
             return ResponseEntity.ok(updatedBanner);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Invalid section value: " + dto.getSection());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(e.getMessage());
