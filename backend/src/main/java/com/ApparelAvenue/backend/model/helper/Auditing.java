@@ -19,12 +19,15 @@ public class Auditing {
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;
+
     @CreatedBy
     @Column(nullable = false, updatable = false)
     private String createdBy;
+
     @LastModifiedDate
     @Column(insertable = false)
     private LocalDateTime updatedDate;
+    
     @LastModifiedBy
     @Column(insertable = false)
     private String updatedBy;
