@@ -47,17 +47,14 @@ public class ProductController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Product> deleteProductById(@PathVariable String id) {
-
         Product product = productService.deleteProductById(id);
         return new ResponseEntity<>(product, HttpStatus.NO_CONTENT);
-
     }
 
     @PostMapping
     public ResponseEntity<Product> save(@RequestBody ProductRequestDto dto) {
         Product product = ProductMapper.convertToProduct(dto);
         Product savedProduct = productService.createProduct(product);
-
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
 
