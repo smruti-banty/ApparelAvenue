@@ -17,7 +17,6 @@ import com.ApparelAvenue.backend.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/v1/customer")
 @RequiredArgsConstructor
 public class CustomerController {
@@ -41,8 +40,8 @@ public class CustomerController {
         return new ResponseEntity<>(adminCreated, HttpStatus.CREATED);
     }
 
-    @GetMapping("/getByEmail")
-    public ResponseEntity<Customer> getByEmail(@RequestParam String email) {
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Customer> getByEmail(@PathVariable String email) {
         Customer customer = customerService.findByEmail(email);
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
