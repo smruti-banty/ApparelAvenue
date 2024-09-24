@@ -56,7 +56,6 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Product> save(@Valid @RequestBody ProductRequestDto dto) {
-        System.out.println("Received request: " + dto);
         Product product = ProductMapper.convertToProduct(dto);
         Product savedProduct = productService.createProduct(product);
 
