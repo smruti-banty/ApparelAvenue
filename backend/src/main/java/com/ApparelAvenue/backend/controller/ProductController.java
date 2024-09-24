@@ -55,6 +55,7 @@ public class ProductController {
     public ResponseEntity<Product> save(@RequestBody ProductRequestDto dto) {
         Product product = ProductMapper.convertToProduct(dto);
         Product savedProduct = productService.createProduct(product);
+
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
 
