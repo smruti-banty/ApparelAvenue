@@ -8,4 +8,8 @@ public interface CustomerService {
 
     Customer findById(String id);
 
+    Customer addAdmin(Customer admin);
+
+    Customer findByEmail(String email);
+
 }
