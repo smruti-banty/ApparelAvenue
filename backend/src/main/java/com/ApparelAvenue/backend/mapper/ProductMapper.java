@@ -1,6 +1,7 @@
 package com.ApparelAvenue.backend.mapper;
 
 import com.ApparelAvenue.backend.dto.ProductRequestDto;
+import com.ApparelAvenue.backend.dto.ProductResponseDto;
 import com.ApparelAvenue.backend.dto.ProductUpdateRequestDto;
 import com.ApparelAvenue.backend.model.Product;
 import org.springframework.beans.BeanUtils;
@@ -19,5 +20,11 @@ public final class ProductMapper {
         Product product = new Product();
         BeanUtils.copyProperties(dto, product);
         return product;
+    }
+
+    public static ProductResponseDto convertProductToProductResponseDto(Product product) {
+        ProductResponseDto productResponseDto = new ProductResponseDto();
+        BeanUtils.copyProperties(product, productResponseDto);
+        return productResponseDto;
     }
 }

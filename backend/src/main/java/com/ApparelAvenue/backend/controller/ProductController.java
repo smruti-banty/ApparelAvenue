@@ -111,16 +111,4 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @PostMapping("/cart")
-    public void saveCart(){
-        OrderAndCart orderAndCart = new OrderAndCart();
-        orderAndCart.setCustomer(customerRepository.getById("uuid-cust-002"));
-        List<Product> products = new ArrayList<>();
-        products.add(productService.getProductById("3c4d5e6f-uuid-9101"));
-        products.add(productService.getProductById("3c4d5e6f-uuid-9101"));
-        products.add(productService.getProductById("3c4d5e6f-uuid-9101"));
-        orderAndCart.setProducts(products);
-        orderAndCart.setOrderAndCartStatus(OrderAndCartStatus.CART);
-        orderAndCartRepository.save(orderAndCart);
-    }
 }

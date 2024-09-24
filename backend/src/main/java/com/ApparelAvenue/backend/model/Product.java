@@ -2,6 +2,8 @@ package com.ApparelAvenue.backend.model;
 
 import com.ApparelAvenue.backend.constant.ProductStatus;
 import com.ApparelAvenue.backend.constant.Section;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
@@ -24,5 +26,6 @@ public class Product {
     private ProductStatus productStatus;
 
     @ManyToMany(mappedBy = "products")
+    @JsonBackReference
     private List<OrderAndCart> orderAndCarts;
 }
