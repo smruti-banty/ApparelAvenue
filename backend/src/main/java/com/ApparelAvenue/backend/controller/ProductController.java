@@ -53,9 +53,15 @@ public class ProductController {
     }
 
     @PatchMapping("/markActive/{id}")
-    public ResponseEntity<Product> activateProductById(@PathVariable String id) {
-        Product product = productService.activateProductById(id);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+    public ResponseEntity<ProductResponseDto> activateProductById(@PathVariable String id) {
+        try {
+            Product product = productService.activateProductById(id);
+            ProductResponseDto productResponseDto = ProductMapper.convertToProductResponseDto(product);
+            return ResponseEntity.ok(productResponseDto);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(null);
+        }
     }
 
     @PostMapping
