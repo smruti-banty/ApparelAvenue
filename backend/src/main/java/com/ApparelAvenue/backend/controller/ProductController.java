@@ -4,6 +4,7 @@ package com.ApparelAvenue.backend.controller;
 import java.util.List;
 
 import com.ApparelAvenue.backend.dto.ProductResponseDto;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -58,7 +59,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDto> save(@RequestBody ProductRequestDto dto) {
+    public ResponseEntity<Product> save(@Valid @RequestBody ProductRequestDto dto) {
         Product product = ProductMapper.convertToProduct(dto);
         Product savedProduct = productService.createProduct(product);
         ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(savedProduct);
@@ -66,8 +67,8 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable String productId,
-            @RequestBody ProductUpdateRequestDto dto) {
+    public ResponseEntity<Product> updateProduct(@PathVariable String productId,
+            @Valid @RequestBody ProductUpdateRequestDto dto) {
         try {
             Product newProduct = ProductMapper.convertProductUpdateRequestDtoToProduct(dto);
             Product updatedProduct = productService.updateProduct(productId, newProduct);
