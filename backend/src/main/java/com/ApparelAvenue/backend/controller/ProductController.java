@@ -52,6 +52,12 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
+    @PatchMapping("/markActive/{id}")
+    public ResponseEntity<Product> activateProductById(@PathVariable String id) {
+        Product product = productService.activateProductById(id);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Product> save(@RequestBody ProductRequestDto dto) {
         Product product = ProductMapper.convertToProduct(dto);
@@ -111,5 +117,23 @@ public class ProductController {
     @GetMapping("/all")
     public List<Product> getProducts() {
         return productService.getProducts();
+    }
+
+    @GetMapping("/active-product")
+    public ResponseEntity<List<ProductResponseDto>> getActiveProducts() {
+        List<Product> activeProducts = productService.getActiveProducts();
+        List<ProductResponseDto> responseDtos = activeProducts.stream()
+                .map(ProductMapper::convertToProductResponseDto)
+                .toList();
+        return ResponseEntity.ok(responseDtos);
+    }
+
+    @GetMapping("/inactive-product")
+    public ResponseEntity<List<ProductResponseDto>> getInactiveProducts() {
+        List<Product> inactiveProducts = productService.getInactiveProducts();
+        List<ProductResponseDto> responseDtos = inactiveProducts.stream()
+                .map(ProductMapper::convertToProductResponseDto)
+                .toList();
+        return ResponseEntity.ok(responseDtos);
     }
 }

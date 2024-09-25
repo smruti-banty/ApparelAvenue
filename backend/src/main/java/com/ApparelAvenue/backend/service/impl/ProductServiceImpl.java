@@ -58,6 +58,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product activateProductById(String id) {
+        if (!productRepository.existsById(id)) {
+            throw new IllegalArgumentException(id + " does not exist.");
+        }
+
+        var product = productRepository.findById(id).orElseThrow();
+        product.setProductStatus(ProductStatus.ACTIVE);
+        return productRepository.save(product);
+    }
+
+    @Override
     public Product increaseProductQuantity(String id, int quantity) {
         if (!productRepository.existsById(id)) {
             throw new IllegalArgumentException("product Id" + id + "doesnot Exists");
@@ -108,5 +119,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProductById(String id) {
         return productRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public List<Product> getActiveProducts() {
+        return productRepository.findByProductStatus(ProductStatus.ACTIVE);
+    }
+
+    @Override
+    public List<Product> getInactiveProducts() {
+        return productRepository.findByProductStatus(ProductStatus.INACTIVE);
     }
 }
