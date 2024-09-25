@@ -34,4 +34,4 @@ build/
 ../.idea
 
 # Ignore the uploads folder
-/images
+images/
