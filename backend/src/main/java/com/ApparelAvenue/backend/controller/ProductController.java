@@ -4,6 +4,7 @@ package com.ApparelAvenue.backend.controller;
 import java.util.List;
 
 import com.ApparelAvenue.backend.dto.ProductResponseDto;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,7 +39,7 @@ public class ProductController {
             return ResponseEntity.ok(productResponseDto);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Product not found with id: " + productId); // Use productId instead of id
+                    .body("Product not found with id: " + productId);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An error occurred while fetching the product.");
@@ -49,12 +50,11 @@ public class ProductController {
     public ResponseEntity<Product> deleteProductById(@PathVariable String id) {
 
         Product product = productService.deleteProductById(id);
-        return new ResponseEntity<>(product, HttpStatus.NO_CONTENT);
-
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Product> save(@RequestBody ProductRequestDto dto) {
+    public ResponseEntity<Product> save(@Valid @RequestBody ProductRequestDto dto) {
         Product product = ProductMapper.convertToProduct(dto);
         Product savedProduct = productService.createProduct(product);
 
@@ -63,7 +63,7 @@ public class ProductController {
 
     @PutMapping("/{productId}")
     public ResponseEntity<Product> updateProduct(@PathVariable String productId,
-            @RequestBody ProductUpdateRequestDto dto) {
+            @Valid @RequestBody ProductUpdateRequestDto dto) {
         try {
             var newProduct = ProductMapper.convertProductUpdateRequestDtoToProduct(dto);
             var updateProduct = productService.updateProduct(productId, newProduct);
@@ -84,12 +84,13 @@ public class ProductController {
     }
 
     @DeleteMapping("/all")
-    public void deleteAllProduct() {
+    public ResponseEntity<Void> deleteAllProduct() {
         productService.deleteAllProduct();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/{id}/decrement/{quantity}")
-    public ResponseEntity<?> getDecResponseEntity(@PathVariable String id, @PathVariable int quantity) {
+    public ResponseEntity<?> decreaseProductQuantity(@PathVariable String id, @PathVariable int quantity) {
         try {
             Product product = productService.decreaseProductQuantity(id, quantity);
             return new ResponseEntity<>(product, HttpStatus.OK);
