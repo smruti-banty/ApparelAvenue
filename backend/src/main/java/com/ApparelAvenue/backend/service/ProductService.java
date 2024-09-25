@@ -15,6 +15,8 @@ public interface ProductService {
 
     Product deleteProductById(String id);
 
+    Product activateProductById(String id);
+
     Product increaseProductQuantity(String id, int quantity);
 
     Product decreaseProductQuantity(String id, int quantity);
@@ -24,4 +26,8 @@ public interface ProductService {
     List<Product> getProducts();
 
     Product getProductById(String id);
+
+    List<Product> getActiveProducts();
+
+    List<Product> getInactiveProducts();
 }

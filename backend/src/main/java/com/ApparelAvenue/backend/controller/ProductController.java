@@ -58,6 +58,18 @@ public class ProductController {
         }
     }
 
+    @PatchMapping("/markActive/{id}")
+    public ResponseEntity<ProductResponseDto> activateProductById(@PathVariable String id) {
+        try {
+            Product product = productService.activateProductById(id);
+            ProductResponseDto productResponseDto = ProductMapper.convertToProductResponseDto(product);
+            return ResponseEntity.ok(productResponseDto);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(null);
+        }
+    }
+
     @PostMapping
     public ResponseEntity<ProductResponseDto> save(@Valid @RequestBody ProductRequestDto dto) {
         Product product = ProductMapper.convertToProduct(dto);
@@ -123,5 +135,23 @@ public class ProductController {
     @GetMapping("/all")
     public List<Product> getProducts() {
         return productService.getProducts();
+    }
+
+    @GetMapping("/active-product")
+    public ResponseEntity<List<ProductResponseDto>> getActiveProducts() {
+        List<Product> activeProducts = productService.getActiveProducts();
+        List<ProductResponseDto> responseDtos = activeProducts.stream()
+                .map(ProductMapper::convertToProductResponseDto)
+                .toList();
+        return ResponseEntity.ok(responseDtos);
+    }
+
+    @GetMapping("/inactive-product")
+    public ResponseEntity<List<ProductResponseDto>> getInactiveProducts() {
+        List<Product> inactiveProducts = productService.getInactiveProducts();
+        List<ProductResponseDto> responseDtos = inactiveProducts.stream()
+                .map(ProductMapper::convertToProductResponseDto)
+                .toList();
+        return ResponseEntity.ok(responseDtos);
     }
 }
