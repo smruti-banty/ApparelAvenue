@@ -9,15 +9,13 @@ import com.ApparelAvenue.backend.model.Banner;
 
 @Service
 public interface BannerService {
-    Banner creatBanner(Banner banner, MultipartFile bannerImage);
+    Banner creatBanner(Banner banner, MultipartFile file);
 
-    Banner updateBanner(String id, Banner newBanner, MultipartFile bannerImage);
+    Banner updateBanner(String id, Banner newBanner, MultipartFile file);
 
     List<Banner> getAllBanners();
 
     Banner getBannerById(String id);
 
-    Banner deleteBannerById(String id);
-
-    String uploadBannerImage(MultipartFile bannerImage);
+    Banner deleteBannerById(String id);    
 }

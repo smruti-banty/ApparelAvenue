@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ApparelAvenue.backend.constant.Section;
 
 import lombok.Data;
+
 @Data
 public class BannerRequestDto {
     private String bannerTitle;

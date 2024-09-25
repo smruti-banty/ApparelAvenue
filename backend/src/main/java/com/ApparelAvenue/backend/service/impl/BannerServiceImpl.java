@@ -1,37 +1,42 @@
 package com.ApparelAvenue.backend.service.impl;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ApparelAvenue.backend.model.Banner;
 import com.ApparelAvenue.backend.repository.BannerRepository;
 import com.ApparelAvenue.backend.service.BannerService;
+import com.ApparelAvenue.backend.service.FileService;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class BannerServiceImpl implements BannerService {
-    @Value("${upload.file.banner}")
-    private String uploadDir;
     private final BannerRepository bannerRepository;
+    private final FileService fileService;
 
     @Override
-    public Banner creatBanner(Banner banner, MultipartFile bannerImage) {
-        if (bannerImage == null || bannerImage.isEmpty()) {
-            throw new IllegalArgumentException("Banner image cannot be empty");
-        }
-        String bannerPath = uploadBannerImage(bannerImage);
-        banner.setBannerImage(bannerPath);
+    public Banner creatBanner(Banner banner, MultipartFile file) {
+        String fileName = fileService.uploadImage(file);
+        banner.setBannerImage(fileName);
         return bannerRepository.save(banner);
+    }
+
+    @Override
+    public Banner updateBanner(String id, Banner newBanner, MultipartFile file) {
+        Banner existingBanner = bannerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Banner not found"));
+        if (file != null && !file.isEmpty()) {
+            String newFileName = fileService.uploadImage(file);
+            newBanner.setBannerImage(newFileName);
+        } else {
+            newBanner.setBannerImage(existingBanner.getBannerImage());
+        }
+        newBanner.setBannerId(existingBanner.getBannerId());
+        return bannerRepository.save(newBanner);
     }
 
     @Override
@@ -46,45 +51,9 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
-    public Banner updateBanner(String id, Banner newBanner, MultipartFile bannerImage) {
-        Banner existingBanner = bannerRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Banner not found with id: " + id));
-        if (newBanner.getBannerTitle() != null) {
-            existingBanner.setBannerTitle(newBanner.getBannerTitle());
-        }
-        if (bannerImage != null && !bannerImage.isEmpty()) {
-            String newImagePath = uploadBannerImage(bannerImage);
-            existingBanner.setBannerImage(newImagePath);
-        }
-        if (newBanner.getSection() != null) {
-            existingBanner.setSection(newBanner.getSection());
-        }
-        return bannerRepository.save(existingBanner);
-    }
-
-    @Override
     public Banner deleteBannerById(String id) {
-        if (!bannerRepository.existsById(id)) {
-            throw new IllegalArgumentException(id + "does not exist");
-        }
-        Banner banner = bannerRepository.findById(id).get();
-        bannerRepository.delete(banner);
+        Banner banner = getBannerById(id);
+        bannerRepository.deleteById(id);
         return banner;
-    }
-
-    @Override
-    public String uploadBannerImage(MultipartFile bannerImage) {
-        if (bannerImage.isEmpty()) {
-            throw new IllegalArgumentException("Cannot upload empty file");
-        }
-        String fileName = UUID.randomUUID().toString() + "_" + bannerImage.getOriginalFilename();
-        Path filePath = Paths.get(uploadDir, fileName);
-        try {
-            Files.createDirectories(filePath.getParent());
-            bannerImage.transferTo(filePath);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to save image: " + e.getMessage(), e);
-        }
-        return fileName;
     }
 }

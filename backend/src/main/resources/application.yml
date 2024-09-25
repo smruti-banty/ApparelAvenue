@@ -16,4 +16,4 @@ server:
 
 upload:
   file:
-    banner: "banner-image"
+    banner: "images"
