@@ -20,9 +20,8 @@ const Router = createBrowserRouter([
     element: <Admin />,
     children: [
       {
-        path: "admin-dashboard",
-        element: <AdminDashBoard />,
         index: true,
+        element: <AdminDashBoard />,
       },
       {
         path: "admin-order",
@@ -47,9 +46,8 @@ const Router = createBrowserRouter([
     element: <Customer />,
     children: [
       {
-        path: "customer-home",
-        element: <CustomerHome />,
         index: true,
+        element: <CustomerHome />,
       },
       {
         path: "customer-cart",
@@ -70,7 +68,7 @@ const Router = createBrowserRouter([
     ],
   },
   {
-    path: "authorization",
+    path: "login",
     element: <Login />,
   },
   {
