@@ -2,12 +2,13 @@ package com.ApparelAvenue.backend.model;
 
 import com.ApparelAvenue.backend.constant.ProductStatus;
 import com.ApparelAvenue.backend.constant.Section;
+import com.ApparelAvenue.backend.model.helper.Auditing;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
-public class Product {
+public class Product extends Auditing {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String productId;
