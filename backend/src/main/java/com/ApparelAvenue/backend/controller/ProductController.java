@@ -59,7 +59,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> save(@Valid @RequestBody ProductRequestDto dto) {
+    public ResponseEntity<ProductResponseDto> save(@Valid @RequestBody ProductRequestDto dto) {
         Product product = ProductMapper.convertToProduct(dto);
         Product savedProduct = productService.createProduct(product);
         ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(savedProduct);
@@ -67,7 +67,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<Product> updateProduct(@PathVariable String productId,
+    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable String productId,
             @Valid @RequestBody ProductUpdateRequestDto dto) {
         try {
             Product newProduct = ProductMapper.convertProductUpdateRequestDtoToProduct(dto);
