@@ -1,4 +1,3 @@
-
 package com.ApparelAvenue.backend.controller;
 
 import java.util.List;
@@ -26,23 +25,23 @@ public class ProductController {
 
     @GetMapping("/{productId}")
     public ResponseEntity<?> getProductById(@PathVariable String productId) {
-            Product product = productService.getProductById(productId);
-            ProductResponseDto productResponseDto = ProductMapper.convertToProductResponseDto(product);
-            return ResponseEntity.ok(productResponseDto);
+        Product product = productService.getProductById(productId);
+        ProductResponseDto productResponseDto = ProductMapper.convertToProductResponseDto(product);
+        return ResponseEntity.ok(productResponseDto);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteProductById(@PathVariable String id) {
-            Product product = productService.deleteProductById(id);
-            ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(product);
-            return new ResponseEntity<>(responseDto, HttpStatus.NO_CONTENT);
+        Product product = productService.deleteProductById(id);
+        ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(product);
+        return new ResponseEntity<>(responseDto, HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/markActive/{id}")
     public ResponseEntity<ProductResponseDto> activateProductById(@PathVariable String id) {
-            Product product = productService.activateProductById(id);
-            ProductResponseDto productResponseDto = ProductMapper.convertToProductResponseDto(product);
-            return ResponseEntity.ok(productResponseDto);
+        Product product = productService.activateProductById(id);
+        ProductResponseDto productResponseDto = ProductMapper.convertToProductResponseDto(product);
+        return ResponseEntity.ok(productResponseDto);
     }
 
     @PostMapping
@@ -55,18 +54,18 @@ public class ProductController {
 
     @PutMapping("/{productId}")
     public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable String productId,
-            @Valid @RequestBody ProductUpdateRequestDto dto) {
-            Product newProduct = ProductMapper.convertProductUpdateRequestDtoToProduct(dto);
-            Product updatedProduct = productService.updateProduct(productId, newProduct);
-            ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(updatedProduct);
-            return ResponseEntity.ok(responseDto);
+                                                            @Valid @RequestBody ProductUpdateRequestDto dto) {
+        Product newProduct = ProductMapper.convertProductUpdateRequestDtoToProduct(dto);
+        Product updatedProduct = productService.updateProduct(productId, newProduct);
+        ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(updatedProduct);
+        return ResponseEntity.ok(responseDto);
     }
 
     @PatchMapping("/{id}/updatePrice/{price}")
     public ResponseEntity<?> updateProductPrice(@PathVariable String id, @PathVariable double price) {
-            Product updatedProduct = productService.updateProductPrice(id, price);
-            ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(updatedProduct);
-            return ResponseEntity.ok(responseDto);
+        Product updatedProduct = productService.updateProductPrice(id, price);
+        ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(updatedProduct);
+        return ResponseEntity.ok(responseDto);
     }
 
     @DeleteMapping("/all")
@@ -77,14 +76,14 @@ public class ProductController {
 
     @PatchMapping("/{id}/decrement/{quantity}")
     public ResponseEntity<?> decreaseProductQuantity(@PathVariable String id, @PathVariable int quantity) {
-            Product product = productService.decreaseProductQuantity(id, quantity);
-            ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(product);
-            return ResponseEntity.ok(responseDto);
+        Product product = productService.decreaseProductQuantity(id, quantity);
+        ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(product);
+        return ResponseEntity.ok(responseDto);
     }
 
     @PatchMapping("/{id}/increase-quantity/{quantity}")
     public ResponseEntity<ProductResponseDto> increaseProductQuantity(@PathVariable String id,
-            @PathVariable int quantity) {
+                                                                      @PathVariable int quantity) {
         Product product = productService.increaseProductQuantity(id, quantity);
         ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(product);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);

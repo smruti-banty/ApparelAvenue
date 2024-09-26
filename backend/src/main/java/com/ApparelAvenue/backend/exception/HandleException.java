@@ -42,19 +42,15 @@ public class HandleException {
             var message = error.getDefaultMessage();
             details.add(fieldName + ": " + message);
         });
-
         var problemDetail = ProblemDetail.forStatus(422);
         problemDetail.setTitle("Invalid data");
         problemDetail.setDetail(details.toString());
-
         return problemDetail;
     }
-
 
     @ExceptionHandler(Exception.class)
     public ProblemDetail handler(Exception e) {
         return ProblemDetail
                 .forStatusAndDetail(HttpStatusCode.valueOf(500), e.getMessage());
     }
-
 }
