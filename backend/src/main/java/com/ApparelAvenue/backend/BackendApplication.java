@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
-@EnableJpaAuditing(auditorAwareRef = "auditorProvider")
+@EnableJpaAuditing(auditorAwareRef = "auditorAwareImpl")
 @OpenAPIDefinition(info = @Info(title = "Apparel Avenue", version = "v1", description = "Apparel Avenue is your go-to platform for all things fashion."))
 public class BackendApplication {
 
