@@ -1,4 +1,4 @@
-package com.ApparelAvenue.config;
+package com.ApparelAvenue.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
