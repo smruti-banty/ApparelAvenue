@@ -1,4 +1,4 @@
-package com.ApparelAvenue.config;
+package com.ApparelAvenue.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +15,8 @@ public class CorsConfig {
                 corsRegistry.addMapping("/**")
                         .allowedHeaders("*")
                         .allowedOrigins("http://localhost:5173")
-                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
-                        .allowCredentials(true);
+                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE");
+//                        .allowCredentials(true);
             }
         };
     }

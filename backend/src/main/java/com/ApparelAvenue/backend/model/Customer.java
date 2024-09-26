@@ -1,7 +1,7 @@
 package com.ApparelAvenue.backend.model;
 
 import com.ApparelAvenue.backend.constant.CustomerRole;
-
+import com.ApparelAvenue.backend.model.helper.Auditing;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Customer {
+public class Customer extends Auditing {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String customerId;

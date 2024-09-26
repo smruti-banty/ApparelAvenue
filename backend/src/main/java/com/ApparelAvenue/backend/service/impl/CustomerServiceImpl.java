@@ -16,7 +16,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer addCustomer(Customer customer) {
-        if (customerRepository.existsByEmail(customer.getCustomerEmail())) {
+        if (customerRepository.existsByCustomerEmail(customer.getCustomerEmail())) {
             throw new RuntimeException("Email already exists");
         }
 
@@ -31,7 +31,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer addAdmin(Customer admin) {
-        if (customerRepository.existsByEmail(admin.getCustomerEmail())) {
+        if (customerRepository.existsByCustomerEmail(admin.getCustomerEmail())) {
             throw new RuntimeException("Email already exists");
         }
 
@@ -41,6 +41,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer findByEmail(String email) {
-        return customerRepository.findByEmail(email).orElseThrow();
+        return customerRepository.findByCustomerEmail(email).orElseThrow();
     }
 }
