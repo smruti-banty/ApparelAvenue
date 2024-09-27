@@ -2,15 +2,13 @@ package com.ApparelAvenue.backend.model;
 
 import com.ApparelAvenue.backend.constant.ProductStatus;
 import com.ApparelAvenue.backend.constant.Section;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
+import com.ApparelAvenue.backend.model.helper.Auditing;
 import jakarta.persistence.*;
 import lombok.Data;
-import java.util.List;
 
 @Entity
 @Data
-public class Product {
+public class Product extends Auditing {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String productId;
@@ -24,8 +22,4 @@ public class Product {
     private Section section;
     @Enumerated(value = EnumType.STRING)
     private ProductStatus productStatus;
-
-    @ManyToMany(mappedBy = "products")
-    @JsonBackReference
-    private List<OrderAndCart> orderAndCarts;
 }

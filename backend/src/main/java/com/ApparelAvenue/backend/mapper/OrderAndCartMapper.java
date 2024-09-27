@@ -21,7 +21,7 @@ public class OrderAndCartMapper {
         BeanUtils.copyProperties(orderAndCart.getCustomer(), customerResponseDto);
 
         List<ProductResponseDto> list = orderAndCart.getProducts().stream()
-                .map(product -> ProductMapper.convertProductToProductResponseDto(product)).toList();
+                .map(product -> ProductMapper.convertToProductResponseDto(product)).toList();
 
         orderAndCartResponseDto.setCustomerResponseDto(customerResponseDto);
         orderAndCartResponseDto.setProductResponseDtos(list);

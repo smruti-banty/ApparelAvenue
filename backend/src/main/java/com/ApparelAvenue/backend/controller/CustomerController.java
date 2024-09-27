@@ -1,25 +1,18 @@
 package com.ApparelAvenue.backend.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ApparelAvenue.backend.constant.OrderAndCartStatus;
-import com.ApparelAvenue.backend.dto.CustomerRequestDto;
 import com.ApparelAvenue.backend.model.Customer;
-import com.ApparelAvenue.backend.model.OrderAndCart;
-import com.ApparelAvenue.backend.model.Product;
-import com.ApparelAvenue.backend.repository.CustomerRepository;
-import com.ApparelAvenue.backend.repository.OrderAndCartRepository;
-import com.ApparelAvenue.backend.service.ProductService;
+import com.ApparelAvenue.backend.service.CustomerService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,14 +20,29 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/customer")
 @RequiredArgsConstructor
 public class CustomerController {
-    private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
 
-    @PostMapping()
-    public ResponseEntity<Customer> createCustomer(@RequestBody CustomerRequestDto customerRequestDto) {
-        Customer customer = new Customer();
-        BeanUtils.copyProperties(customerRequestDto, customer);
-        customerRepository.save(customer);
-        return new ResponseEntity<>(customer, HttpStatus.OK);
+    @PostMapping("/addCustomer")
+    public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
+        Customer customer1 = customerService.addCustomer(customer);
+        return new ResponseEntity<>(customer1, HttpStatus.CREATED);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Customer> findById(@PathVariable String id) {
+        Customer admin = customerService.findById(id);
+        return new ResponseEntity<>(admin, HttpStatus.OK);
+    }
+
+    @PostMapping("/addAdmin")
+    public ResponseEntity<Customer> addAdmin(@RequestBody Customer admin) {
+        Customer adminCreated = customerService.addAdmin(admin);
+        return new ResponseEntity<>(adminCreated, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Customer> getByEmail(@PathVariable String email) {
+        Customer customer = customerService.findByEmail(email);
+        return new ResponseEntity<>(customer, HttpStatus.OK);
+    }
 }

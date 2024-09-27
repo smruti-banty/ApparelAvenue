@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collector;
 
 import com.ApparelAvenue.backend.constant.OrderAndCartStatus;
+import com.ApparelAvenue.backend.dto.OrderAndCartRequestDto;
 import com.ApparelAvenue.backend.dto.OrderAndCartResponseDto;
 import com.ApparelAvenue.backend.mapper.OrderAndCartMapper;
 import com.ApparelAvenue.backend.model.OrderAndCart;
@@ -51,8 +52,8 @@ public class OrderAndCartController {
                 .ok(OrderAndCartMapper.convertToListOfOrderAndCartResponseDto(orderAndCartService.getCarts()));
     }
 
-    @PostMapping("/cart")
-    public ResponseEntity<Void> saveCart() {
+    @PostMapping("/save")
+    public ResponseEntity<Void> saveCart(OrderAndCartRequestDto orderAndCartRequestDto) {
         OrderAndCart orderAndCart = new OrderAndCart();
         orderAndCart.setCustomer(customerRepository.findById("0f9286bd-ddc9-414c-ac21-fbd41be10ea1").get());
 

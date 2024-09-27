@@ -1,23 +1,12 @@
-
 package com.ApparelAvenue.backend.controller;
 
-import com.ApparelAvenue.backend.constant.OrderAndCartStatus;
-import com.ApparelAvenue.backend.constant.ProductStatus;
-import com.ApparelAvenue.backend.constant.Section;
-import com.ApparelAvenue.backend.model.OrderAndCart;
-import com.ApparelAvenue.backend.repository.CustomerRepository;
-import com.ApparelAvenue.backend.repository.OrderAndCartRepository;
+import java.util.List;
+
+import com.ApparelAvenue.backend.dto.ProductResponseDto;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ApparelAvenue.backend.dto.ProductRequestDto;
 import com.ApparelAvenue.backend.dto.ProductUpdateRequestDto;
@@ -27,88 +16,103 @@ import com.ApparelAvenue.backend.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
-    private final OrderAndCartRepository orderAndCartRepository;
-    private final CustomerRepository customerRepository;
 
     @GetMapping("/{productId}")
     public ResponseEntity<?> getProductById(@PathVariable String productId) {
-        try {
-            Product product = productService.getProductById(productId); // Declare product only once
-            return ResponseEntity.ok(product);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Product not found with id: " + productId); // Use productId instead of id
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("An error occurred while fetching the product.");
-        }
+        Product product = productService.getProductById(productId);
+        ProductResponseDto productResponseDto = ProductMapper.convertToProductResponseDto(product);
+        return ResponseEntity.ok(productResponseDto);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Product> deleteProductById(@PathVariable String id) {
-
+    public ResponseEntity<?> deleteProductById(@PathVariable String id) {
         Product product = productService.deleteProductById(id);
-        return new ResponseEntity<>(product, HttpStatus.NO_CONTENT);
+        ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(product);
+        return new ResponseEntity<>(responseDto, HttpStatus.NO_CONTENT);
+    }
 
+    @PatchMapping("/markActive/{id}")
+    public ResponseEntity<ProductResponseDto> activateProductById(@PathVariable String id) {
+        Product product = productService.activateProductById(id);
+        ProductResponseDto productResponseDto = ProductMapper.convertToProductResponseDto(product);
+        return ResponseEntity.ok(productResponseDto);
     }
 
     @PostMapping
-    public ResponseEntity<Product> save(@RequestBody ProductRequestDto dto) {
+    public ResponseEntity<ProductResponseDto> save(@Valid @RequestBody ProductRequestDto dto) {
         Product product = ProductMapper.convertToProduct(dto);
         Product savedProduct = productService.createProduct(product);
-
-        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+        ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(savedProduct);
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<Product> updateProduct(@PathVariable String productId,
-            @RequestBody ProductUpdateRequestDto dto) {
-        try {
-            var newProduct = ProductMapper.convertProductUpdateRequestDtoToProduct(dto);
-            var updateProduct = productService.updateProduct(productId, newProduct);
-            return ResponseEntity.ok(updateProduct);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable String productId,
+            @Valid @RequestBody ProductUpdateRequestDto dto) {
+        Product newProduct = ProductMapper.convertProductUpdateRequestDtoToProduct(dto);
+        Product updatedProduct = productService.updateProduct(productId, newProduct);
+        ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(updatedProduct);
+        return ResponseEntity.ok(responseDto);
     }
 
     @PatchMapping("/{id}/updatePrice/{price}")
     public ResponseEntity<?> updateProductPrice(@PathVariable String id, @PathVariable double price) {
-        try {
-            Product updateProduct = productService.updateProductPrice(id, price);
-            return new ResponseEntity<Product>(updateProduct, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>("Invalid input: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        Product updatedProduct = productService.updateProductPrice(id, price);
+        ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(updatedProduct);
+        return ResponseEntity.ok(responseDto);
     }
 
     @DeleteMapping("/all")
-    public void deleteAllProduct() {
+    public ResponseEntity<Void> deleteAllProduct() {
         productService.deleteAllProduct();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/{id}/decrement/{quantity}")
-    public ResponseEntity<?> getDecResponseEntity(@PathVariable String id, @PathVariable int quantity) {
-        try {
-            Product product = productService.decreaseProductQuantity(id, quantity);
-            return new ResponseEntity<>(product, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<?> decreaseProductQuantity(@PathVariable String id, @PathVariable int quantity) {
+        Product product = productService.decreaseProductQuantity(id, quantity);
+        ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(product);
+        return ResponseEntity.ok(responseDto);
     }
 
     @PatchMapping("/{id}/increase-quantity/{quantity}")
-    public ResponseEntity<Product> increaseProductQuantity(@PathVariable String id, @PathVariable int quantity) {
+    public ResponseEntity<ProductResponseDto> increaseProductQuantity(@PathVariable String id,
+            @PathVariable int quantity) {
         Product product = productService.increaseProductQuantity(id, quantity);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(product);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    public ResponseEntity<List<Product>> getActiveAndInactiveProducts() {
+        return ResponseEntity.ok(productService.getProducts());
+    }
+
+    @GetMapping("/all")
+    public List<Product> getProducts() {
+        return productService.getProducts();
+    }
+
+    @GetMapping("/active-product")
+    public ResponseEntity<List<ProductResponseDto>> getActiveProducts() {
+        List<Product> activeProducts = productService.getActiveProducts();
+        List<ProductResponseDto> responseDtos = activeProducts.stream()
+                .map(ProductMapper::convertToProductResponseDto)
+                .toList();
+        return ResponseEntity.ok(responseDtos);
+    }
+
+    @GetMapping("/inactive-product")
+    public ResponseEntity<List<ProductResponseDto>> getInactiveProducts() {
+        List<Product> inactiveProducts = productService.getInactiveProducts();
+        List<ProductResponseDto> responseDtos = inactiveProducts.stream()
+                .map(ProductMapper::convertToProductResponseDto)
+                .toList();
+        return ResponseEntity.ok(responseDtos);
+    }
 }
