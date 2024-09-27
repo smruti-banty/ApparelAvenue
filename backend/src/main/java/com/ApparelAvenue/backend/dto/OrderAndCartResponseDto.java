@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class OrderAndCartResponseDto {
     private int orderId;
-    private Customer customer;
+    private CustomerResponseDto customerResponseDto;
     List<ProductResponseDto> productResponseDtos;
     OrderAndCartStatus orderAndCartStatus;
 }

@@ -19,6 +19,7 @@ import com.ApparelAvenue.backend.model.OrderAndCart;
 import com.ApparelAvenue.backend.model.Product;
 import com.ApparelAvenue.backend.repository.CustomerRepository;
 import com.ApparelAvenue.backend.repository.OrderAndCartRepository;
+import com.ApparelAvenue.backend.service.OrderAndCartService;
 import com.ApparelAvenue.backend.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,14 +28,27 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/order-and-cart")
 @RequiredArgsConstructor
 public class OrderAndCartController {
-    private final OrderAndCartRepository orderAndCartRepository;
+    private final OrderAndCartService orderAndCartService;
     private final ProductService productService;
     private final CustomerRepository customerRepository;
+    private final OrderAndCartRepository orderAndCartRepository;
 
-    @GetMapping("/orderes")
-    public ResponseEntity<List<OrderAndCartResponseDto>> getOrderes() {
-        return ResponseEntity.ok(orderAndCartRepository.findAll().stream()
-                .map(orderAndCart -> OrderAndCartMapper.convertToOrderAndCartResponseDto(orderAndCart)).toList());
+    @GetMapping("/orders-and-carts")
+    public ResponseEntity<List<OrderAndCartResponseDto>> getAllOrderAndCarts() {
+        return ResponseEntity
+                .ok(OrderAndCartMapper.convertToListOfOrderAndCartResponseDto(orderAndCartService.getAll()));
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity<List<OrderAndCartResponseDto>> getAllOrders() {
+        return ResponseEntity
+                .ok(OrderAndCartMapper.convertToListOfOrderAndCartResponseDto(orderAndCartService.getOrders()));
+    }
+
+    @GetMapping("/carts")
+    public ResponseEntity<List<OrderAndCartResponseDto>> getAllCarts() {
+        return ResponseEntity
+                .ok(OrderAndCartMapper.convertToListOfOrderAndCartResponseDto(orderAndCartService.getCarts()));
     }
 
     @PostMapping("/cart")
