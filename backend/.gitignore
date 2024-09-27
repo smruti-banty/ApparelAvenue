@@ -33,5 +33,10 @@ build/
 .vscode/
 ../.idea
 
-# Ignore the uploads folder
-/images/
+# Ignore all image files in the repository
+*.jpg
+*.jpeg
+*.png
+
+# Ignore the images/banners folder
+images/banners/

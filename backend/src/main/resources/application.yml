@@ -16,4 +16,5 @@ server:
 
 upload:
   file:
-    banner: "images"
+    root: "images"
+    banner: "banners"

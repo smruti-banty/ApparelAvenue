@@ -1,11 +1,10 @@
 package com.ApparelAvenue.backend.service;
 
 import org.springframework.web.multipart.MultipartFile;
-
 public interface FileService {
-    void createImageDir();
+    void createBannerImageDir(); 
 
-    String uploadImage(MultipartFile file);
+    String uploadBannerImage(String filePath, MultipartFile file); 
 
-    byte[] getImage(String fileName);
+    byte[] getBannerImage(String filePath);  
 }

@@ -1,24 +1,16 @@
 package com.ApparelAvenue.backend.controller;
 
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import com.ApparelAvenue.backend.dto.BannerRequestDto;
 import com.ApparelAvenue.backend.dto.BannerUpdateRequestDto;
 import com.ApparelAvenue.backend.mapper.BannerMapper;
 import com.ApparelAvenue.backend.model.Banner;
 import com.ApparelAvenue.backend.service.BannerService;
-
+import com.ApparelAvenue.backend.service.FileService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -26,11 +18,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BannerController {
     private final BannerService bannerService;
+    private final FileService fileService;
 
     @PostMapping
-    public ResponseEntity<Banner> createBanner(@ModelAttribute BannerRequestDto dto) {
+    public ResponseEntity<Banner> createBanner(@ModelAttribute BannerRequestDto dto,
+                                               @RequestParam("bannerImage") MultipartFile bannerImage) {
         Banner banner = BannerMapper.convertToBanner(dto);
-        Banner createdBanner = bannerService.creatBanner(banner, dto.getBannerImage());
+        Banner createdBanner = bannerService.createBanner(banner, bannerImage);
         return new ResponseEntity<>(createdBanner, HttpStatus.CREATED);
     }
 
@@ -54,10 +48,11 @@ public class BannerController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateBanner(
             @PathVariable String id,
-            @ModelAttribute BannerUpdateRequestDto dto) {
+            @ModelAttribute BannerUpdateRequestDto dto,
+            @RequestParam(value = "bannerImage", required = false) MultipartFile bannerImage) {
         try {
             Banner newBanner = BannerMapper.convertBannerUpdateRequestDtoToBanner(dto);
-            Banner updatedBanner = bannerService.updateBanner(id, newBanner, dto.getBannerImage());
+            Banner updatedBanner = bannerService.updateBanner(id, newBanner, bannerImage);
             return ResponseEntity.ok(updatedBanner);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -77,4 +72,13 @@ public class BannerController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping(path = "/image/{bannerId}", produces = { "image/jpg", "image/jpeg", "image/png" })
+    public byte[] getBannerImage(@PathVariable String bannerId) {
+        Banner banner = bannerService.getBannerById(bannerId);
+        if (banner == null || banner.getBannerImage() == null) {
+            throw new RuntimeException("Banner image not found");
+        }
+        return fileService.getBannerImage(banner.getBannerImage());
+    }   
 }
