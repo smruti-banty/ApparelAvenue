@@ -3,7 +3,6 @@ package com.ApparelAvenue.backend.dto;
 import java.util.List;
 
 import com.ApparelAvenue.backend.constant.OrderAndCartStatus;
-import com.ApparelAvenue.backend.model.Customer;
 
 import lombok.Data;
 
