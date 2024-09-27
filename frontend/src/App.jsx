@@ -1,5 +1,13 @@
-export default function App() {
+import './App.css';
+import Login from './pages/Login.jsx';
+import React from 'react';
+
+function App() {
   return (
-    <h1 className="text-3xl font-bold underline bg-red-900">Hello world!</h1>
+    <div className="App">
+      <Login />
+    </div>
   );
 }
+
+export default App;
