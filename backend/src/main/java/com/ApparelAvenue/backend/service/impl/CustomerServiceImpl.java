@@ -43,4 +43,19 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer findByEmail(String email) {
         return customerRepository.findByCustomerEmail(email).orElseThrow();
     }
+
+    @Override
+    public Customer authenticateCustomer(String email, String password) {
+        Customer customer = findByEmail(email);
+        if (!customer.getCustomerPassword().equals(password)) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        Customer authenticatedCustomer = new Customer();
+        authenticatedCustomer.setCustomerName(customer.getCustomerName());
+        authenticatedCustomer.setCustomerPhoneNumber(customer.getCustomerPhoneNumber());
+        authenticatedCustomer.setCustomerAddress(customer.getCustomerAddress());
+
+        return authenticatedCustomer;
+    }
 }

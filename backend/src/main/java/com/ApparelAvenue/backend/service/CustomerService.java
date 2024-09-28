@@ -10,4 +10,6 @@ public interface CustomerService {
     Customer addAdmin(Customer admin);
 
     Customer findByEmail(String email);
+
+    Customer authenticateCustomer(String email, String password);
 }

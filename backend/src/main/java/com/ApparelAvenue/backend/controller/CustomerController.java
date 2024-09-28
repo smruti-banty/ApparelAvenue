@@ -45,4 +45,11 @@ public class CustomerController {
         Customer customer = customerService.findByEmail(email);
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
+
+    @PostMapping("/loginCustomer/login")
+    public ResponseEntity<Customer> authenticateCustomer(@RequestBody Customer customer) {
+        Customer authenticatedCustomer = customerService.authenticateCustomer(customer.getCustomerEmail(),
+                customer.getCustomerPassword());
+        return new ResponseEntity<>(authenticatedCustomer, HttpStatus.OK);
+    }
 }
