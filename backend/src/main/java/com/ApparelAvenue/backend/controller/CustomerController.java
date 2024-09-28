@@ -63,7 +63,7 @@ public class CustomerController {
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
-    @PostMapping("/loginCustomer/login")
+    @PostMapping("/login")
     public ResponseEntity<Customer> authenticateCustomer(@RequestBody LoginDto loginDto) {
         Customer authenticatedCustomer = customerService.authenticateCustomer(loginDto);
         return new ResponseEntity<>(authenticatedCustomer, HttpStatus.OK);
