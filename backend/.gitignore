@@ -32,3 +32,11 @@ build/
 ### VS Code ###
 .vscode/
 ../.idea
+
+# Ignore all image files in the repository
+*.jpg
+*.jpeg
+*.png
+
+# Ignore the images/banners folder
+images/banners/
