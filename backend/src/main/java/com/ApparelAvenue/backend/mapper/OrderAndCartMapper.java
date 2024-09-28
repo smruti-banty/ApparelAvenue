@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 
 import com.ApparelAvenue.backend.dto.CustomerResponseDto;
+import com.ApparelAvenue.backend.dto.OrderAndCartRequestDto;
 import com.ApparelAvenue.backend.dto.OrderAndCartResponseDto;
 import com.ApparelAvenue.backend.dto.ProductResponseDto;
 import com.ApparelAvenue.backend.model.OrderAndCart;
@@ -31,5 +32,11 @@ public class OrderAndCartMapper {
     public static List<OrderAndCartResponseDto> convertToListOfOrderAndCartResponseDto(List<OrderAndCart> orders) {
         return orders.stream()
                 .map(orderAndCart -> OrderAndCartMapper.convertToOrderAndCartResponseDto(orderAndCart)).toList();
+    }
+
+    public static OrderAndCart convertToOrderAndCart(OrderAndCartRequestDto dto) {
+        var orderAndCart = new OrderAndCart();
+        BeanUtils.copyProperties(dto, orderAndCart);
+        return orderAndCart;
     }
 }

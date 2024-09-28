@@ -10,7 +10,6 @@ import lombok.Data;
 
 @Data
 public class OrderAndCartRequestDto {
-    private int orderId;
     private String customerId;
 
     List<String> productIds;

@@ -1,27 +1,20 @@
 package com.ApparelAvenue.backend.controller;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 
-import com.ApparelAvenue.backend.constant.OrderAndCartStatus;
 import com.ApparelAvenue.backend.dto.OrderAndCartRequestDto;
 import com.ApparelAvenue.backend.dto.OrderAndCartResponseDto;
 import com.ApparelAvenue.backend.mapper.OrderAndCartMapper;
-import com.ApparelAvenue.backend.model.OrderAndCart;
-import com.ApparelAvenue.backend.model.Product;
-import com.ApparelAvenue.backend.repository.CustomerRepository;
-import com.ApparelAvenue.backend.repository.OrderAndCartRepository;
 import com.ApparelAvenue.backend.service.OrderAndCartService;
-import com.ApparelAvenue.backend.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,9 +23,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderAndCartController {
     private final OrderAndCartService orderAndCartService;
-    private final ProductService productService;
-    private final CustomerRepository customerRepository;
-    private final OrderAndCartRepository orderAndCartRepository;
 
     @GetMapping("/orders-and-carts")
     public ResponseEntity<List<OrderAndCartResponseDto>> getAllOrderAndCarts() {
@@ -46,25 +36,41 @@ public class OrderAndCartController {
                 .ok(OrderAndCartMapper.convertToListOfOrderAndCartResponseDto(orderAndCartService.getOrders()));
     }
 
+    @GetMapping("/orders/{customerId}")
+    public ResponseEntity<List<OrderAndCartResponseDto>> getAllOrders(@PathVariable String customerId) {
+        var orderAndCarts = orderAndCartService.getOrdersById(customerId);
+        return ResponseEntity
+                .ok(OrderAndCartMapper.convertToListOfOrderAndCartResponseDto(orderAndCarts));
+    }
+
     @GetMapping("/carts")
     public ResponseEntity<List<OrderAndCartResponseDto>> getAllCarts() {
         return ResponseEntity
                 .ok(OrderAndCartMapper.convertToListOfOrderAndCartResponseDto(orderAndCartService.getCarts()));
     }
 
+    @GetMapping("/carts/{customerId}")
+    public ResponseEntity<List<OrderAndCartResponseDto>> getAllCarts(@PathVariable String customerId) {
+        var orderAndCarts = orderAndCartService.getCartsById(customerId);
+        return ResponseEntity
+                .ok(OrderAndCartMapper.convertToListOfOrderAndCartResponseDto(orderAndCarts));
+    }
+
     @PostMapping("/save")
-    public ResponseEntity<Void> saveCart(OrderAndCartRequestDto orderAndCartRequestDto) {
-        OrderAndCart orderAndCart = new OrderAndCart();
-        orderAndCart.setCustomer(customerRepository.findById("0f9286bd-ddc9-414c-ac21-fbd41be10ea1").get());
+    public ResponseEntity<OrderAndCartResponseDto> saveCart(
+            @RequestBody OrderAndCartRequestDto orderAndCartRequestDto) {
+        var orderAndCart = OrderAndCartMapper.convertToOrderAndCart(orderAndCartRequestDto);
 
-        List<Product> products = new ArrayList<>();
-        products.add(productService.getProductById("7c7bb1bd-45df-47b3-b60d-b507db4f4057"));
-        products.add(productService.getProductById("958ffd51-b1a2-47e4-a6c8-9572f8c54177"));
+        return new ResponseEntity<>(OrderAndCartMapper.convertToOrderAndCartResponseDto(
+                orderAndCartService.addOrderAndCart(orderAndCart, orderAndCartRequestDto.getCustomerId(),
+                        orderAndCartRequestDto.getProductIds())),
+                HttpStatus.CREATED);
+    }
 
-        orderAndCart.setProducts(products);
-        orderAndCart.setOrderAndCartStatus(OrderAndCartStatus.CART);
-
-        orderAndCartRepository.save(orderAndCart);
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
+    @PostMapping("/order-all/{customerId}")
+    public ResponseEntity<List<OrderAndCartResponseDto>> orderAll(@PathVariable String customerId) {
+        return new ResponseEntity<>(
+                OrderAndCartMapper.convertToListOfOrderAndCartResponseDto(orderAndCartService.moveToOrder(customerId)),
+                HttpStatus.CREATED);
     }
 }

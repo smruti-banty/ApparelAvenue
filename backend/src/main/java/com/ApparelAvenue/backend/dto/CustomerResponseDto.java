@@ -7,6 +7,6 @@ public class CustomerResponseDto {
     private String customerId;
     private String customerName;
     private String customerEmail;
-    private int customerPhoneNumber;
+    private String customerPhoneNumber;
     private String customerAddress;
 }

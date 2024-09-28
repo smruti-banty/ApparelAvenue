@@ -15,7 +15,6 @@ import jakarta.persistence.SequenceGenerator;
 import java.util.List;
 
 import com.ApparelAvenue.backend.constant.OrderAndCartStatus;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
 
@@ -33,7 +32,6 @@ public class OrderAndCart {
 
     @ManyToMany
     @JoinTable(name = "order_product", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
-    @JsonManagedReference
     List<Product> products;
 
     @Enumerated(EnumType.STRING)

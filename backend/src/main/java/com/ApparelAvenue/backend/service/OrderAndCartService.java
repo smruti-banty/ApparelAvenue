@@ -8,13 +8,17 @@ import java.util.List;
 
 @Service
 public interface OrderAndCartService {
-    public List<OrderAndCart> getAll();
+    List<OrderAndCart> getAll();
 
-    public List<OrderAndCart> getOrders();
+    List<OrderAndCart> getOrders();
 
-    public List<OrderAndCart> getCarts();
+    List<OrderAndCart> getCarts();
 
-    public List<OrderAndCart> getCartsById(String cutomerId);
+    List<OrderAndCart> getCartsById(String customerId);
 
-    public List<OrderAndCart> getOrdersById(String customerId);
+    List<OrderAndCart> getOrdersById(String customerId);
+
+    OrderAndCart addOrderAndCart(OrderAndCart orderAndCart, String customerId, List<String> productIds);
+
+    List<OrderAndCart> moveToOrder(String customerId);
 }
