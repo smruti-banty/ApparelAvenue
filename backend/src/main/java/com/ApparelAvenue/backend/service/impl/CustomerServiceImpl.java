@@ -3,6 +3,7 @@ package com.ApparelAvenue.backend.service.impl;
 import org.springframework.stereotype.Service;
 
 import com.ApparelAvenue.backend.constant.CustomerRole;
+import com.ApparelAvenue.backend.dto.LoginDto;
 import com.ApparelAvenue.backend.model.Customer;
 import com.ApparelAvenue.backend.repository.CustomerRepository;
 import com.ApparelAvenue.backend.service.CustomerService;
@@ -42,5 +43,20 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer findByEmail(String email) {
         return customerRepository.findByCustomerEmail(email).orElseThrow();
+    }
+
+    @Override
+    public Customer authenticateCustomer(LoginDto loginDto) {
+        Customer customer = findByEmail(loginDto.getEmail());
+        if (!customer.getCustomerPassword().equals(loginDto.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        Customer authenticatedCustomer = new Customer();
+        authenticatedCustomer.setCustomerName(customer.getCustomerName());
+        authenticatedCustomer.setCustomerPhoneNumber(customer.getCustomerPhoneNumber());
+        authenticatedCustomer.setCustomerAddress(customer.getCustomerAddress());
+
+        return authenticatedCustomer;
     }
 }

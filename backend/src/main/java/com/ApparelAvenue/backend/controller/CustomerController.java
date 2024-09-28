@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ApparelAvenue.backend.dto.LoginDto;
 import com.ApparelAvenue.backend.model.Customer;
 import com.ApparelAvenue.backend.service.CustomerService;
 
@@ -60,5 +61,11 @@ public class CustomerController {
     public ResponseEntity<Customer> getByEmail(@PathVariable String email) {
         Customer customer = customerService.findByEmail(email);
         return new ResponseEntity<>(customer, HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Customer> authenticateCustomer(@RequestBody LoginDto loginDto) {
+        Customer authenticatedCustomer = customerService.authenticateCustomer(loginDto);
+        return new ResponseEntity<>(authenticatedCustomer, HttpStatus.OK);
     }
 }
