@@ -76,7 +76,7 @@ public class ProductController {
     @ApiResponse(responseCode = "200", description = "product updated")
     @ApiResponse(responseCode = "404", description = "product not found", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable String productId,
-                                                            @Valid @RequestBody ProductUpdateRequestDto dto) {
+            @Valid @RequestBody ProductUpdateRequestDto dto) {
         Product newProduct = ProductMapper.convertProductUpdateRequestDtoToProduct(dto);
         Product updatedProduct = productService.updateProduct(productId, newProduct);
         ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(updatedProduct);
@@ -119,7 +119,7 @@ public class ProductController {
     @ApiResponse(responseCode = "404", description = "Product not found", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     @ApiResponse(responseCode = "400", description = "Invalid quantity", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     public ResponseEntity<ProductResponseDto> increaseProductQuantity(@PathVariable String id,
-                                                                      @PathVariable int quantity) {
+            @PathVariable int quantity) {
         Product product = productService.increaseProductQuantity(id, quantity);
         ProductResponseDto responseDto = ProductMapper.convertToProductResponseDto(product);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
