@@ -1,5 +1,6 @@
 package com.ApparelAvenue.backend.service;
 
+import com.ApparelAvenue.backend.dto.LoginDto;
 import com.ApparelAvenue.backend.model.Customer;
 
 public interface CustomerService {
@@ -10,4 +11,6 @@ public interface CustomerService {
     Customer addAdmin(Customer admin);
 
     Customer findByEmail(String email);
+
+    Customer authenticateCustomer(LoginDto loginDto);
 }
